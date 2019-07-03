@@ -7,7 +7,6 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		System.out.println("prueba");
 
 		String codigoFuente = "1234h>=&jd@h?jfdhj#AABB212_palabra_67376478!=";
 
