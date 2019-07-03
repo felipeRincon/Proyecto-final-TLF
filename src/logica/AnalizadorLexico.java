@@ -28,11 +28,13 @@ public class AnalizadorLexico {
 			if (caracterActual == '\n') {
 				filaActual++;
 				colActual = 0;
-			} else {
+			} else {		
+				
 				colActual++;
 			}
 
 			caracterActual = codigoFuente.charAt(posActual);
+			
 		} else {
 			caracterActual = finCodigo;
 		}
@@ -43,6 +45,11 @@ public class AnalizadorLexico {
 		return listaTokens;
 	}
 
+	
+	/**
+	 * Metodo principal del analizador lexico
+	 * 
+	 */
 	public void analizar() {
 
 		while (caracterActual != finCodigo) {
@@ -52,7 +59,7 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			if (esEntero())
+			if (isNumeronatural())
 				continue;
 			if (esIdentificador())
 				continue;
@@ -75,11 +82,11 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Detecta los caracteres correspondientes a lso enteros
+	 * Detecta los caracteres correspondientes a los enteros
 	 * 
 	 * @return
 	 */
-	public boolean esEntero() {
+	public boolean isNumeronatural() {
 
 		if (Character.isDigit(caracterActual)) {
 			String palabra = "";
@@ -95,7 +102,7 @@ public class AnalizadorLexico {
 				obtenerSgteCaracter();
 			}
 
-			listaTokens.add(new Token(Categoria.ENTERO, palabra, fila, columna));
+			listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
 			return true;
 
 		}
@@ -103,6 +110,11 @@ public class AnalizadorLexico {
 		// RI
 		return false;
 	}
+	
+	
+	
+	
+	//public boolean isNumeroReal()
 
 	/**
 	 * 
