@@ -155,7 +155,6 @@ public class AnalizadorLexico {
 	 */
 	public boolean esOperadorRelacional() {
 
-		//Esto es un cambio
 		
 		// OPeradores que por si solos ya son un operador relacional
 		if (caracterActual == '>' || caracterActual == '<') {
@@ -167,7 +166,6 @@ public class AnalizadorLexico {
 			// Transición
 			palabra += caracterActual;
 
-			listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
 
 			obtenerSgteCaracter();
 
@@ -181,8 +179,11 @@ public class AnalizadorLexico {
 
 				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
 
+				obtenerSgteCaracter();
 				return true;
 
+			}else {
+				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
 			}
 
 			if (!esRelacional(caracterActual)) {
@@ -209,10 +210,12 @@ public class AnalizadorLexico {
 				palabra += caracterActual;
 
 				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
+				obtenerSgteCaracter();
 
 				return true;
 
 			}
+				
 		}
 
 		return false;

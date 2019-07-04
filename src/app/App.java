@@ -7,7 +7,7 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		String codigoFuente = "<=";
+		String codigoFuente = "<=>123!=";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
