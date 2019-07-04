@@ -8,7 +8,9 @@ public class App {
 	public static void main(String arg[]) {
 
 
-		String codigoFuente = "1223t 122000  +==0.0233";
+
+				String codigoFgoFuente = "1223t 122000  +==0.0233";
+
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
