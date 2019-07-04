@@ -76,7 +76,7 @@ public class AnalizadorLexico {
 
 	/**
 	 * Detecta los caracteres correspondientes a lso enteros
-	 * 
+	 * Funciona
 	 * @return
 	 */
 	public boolean esEntero() {
@@ -105,7 +105,8 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * 
+	 * REVISAR
+	 * SI SE PONE ALGUN IDENTIFICADOR AUTOMATICAMENTE TODO LO QUE SIGUE SE CONVIERTE EN IDENTIFICADOR Y SE CONCATENA
 	 * @return
 	 */
 	public boolean esIdentificador() {
