@@ -128,6 +128,7 @@ public class AnalizadorLexico {
 
 			if (isSeparador())
 				continue;
+
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
 		}
@@ -421,6 +422,23 @@ public class AnalizadorLexico {
 //
 //					}
 //				}
+
+				// else {
+				//
+				// if (caracterActual == '=') {
+				//
+				// fila = filaActual;
+				// columna = colActual;
+				//
+				// // Transición
+				// palabra += caracterActual;
+				//
+				// listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila,
+				// columna));
+				// return true;
+				//
+				// }
+				// }
 
 			}
 			if (caraterAnterio == '+') {

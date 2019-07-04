@@ -7,7 +7,7 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		String codigoFuente = "$cvff d**d$dsds %>>=--sasaddff+++ddfdf ! , () {{ddfd{df  .1213  1212zaddf   1212.1212 ";
+		String codigoFuente = "123 1234.12 $ola k ace$ nombre + / * >=<= ? @ #F2B5C #FC123 [}{](yt),;";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
