@@ -102,6 +102,9 @@ public class AnalizadorLexico {
 			if (esIdentificador())
 				continue;
 
+			if (esOperadorAritmetico())
+				continue;
+
 			if (esOperadorRelacional())
 				continue;
 
@@ -113,16 +116,17 @@ public class AnalizadorLexico {
 
 			if (isCadenaDeCaracteres())
 				continue;
-			
-			if(isLlave())
+
+			if (isLlave())
 				continue;
-			
-			if(isParentesis())
+
+			if (isParentesis())
 				continue;
-			
-			if(isTerminal())
+
+			if (isTerminal())
 				continue;
-			if(isSeparador())
+
+			if (isSeparador())
 				continue;
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
@@ -132,8 +136,8 @@ public class AnalizadorLexico {
 
 	/**
 	 * Detecta los caracteres o cadenas de caracteres que correspondientes a los
-	 * enteros
-	 * ESTA LISTO
+	 * enteros ESTA LISTO
+	 * 
 	 * @return true si el token se agrego con exito
 	 */
 	public boolean esNumeronatural() {
@@ -170,6 +174,7 @@ public class AnalizadorLexico {
 
 	/**
 	 * Metodo que detectad los numerosReales
+	 * 
 	 * @return
 	 */
 	public boolean esNumeroReal() {
@@ -219,7 +224,7 @@ public class AnalizadorLexico {
 
 		}
 
-		//Se puede iniciar directamente con punto
+		// Se puede iniciar directamente con punto
 		if (caracterActual == '.') {
 
 			// inciamos palabra
@@ -235,7 +240,7 @@ public class AnalizadorLexico {
 			// Como ya añadimos el caracter obtenemos el siguiente
 			obtenerSgteCaracter();
 
-			//Si son digitos empezamos a concatenar
+			// Si son digitos empezamos a concatenar
 			while (Character.isDigit(caracterActual)) {
 				palabra += caracterActual;
 
@@ -300,7 +305,6 @@ public class AnalizadorLexico {
 	 */
 	public boolean esOperadorRelacional() {
 
-		
 		// OPeradores que por si solos ya son un operador relacional
 		if (caracterActual == '>' || caracterActual == '<') {
 
@@ -310,7 +314,6 @@ public class AnalizadorLexico {
 
 			// Transición
 			palabra += caracterActual;
-
 
 			obtenerSgteCaracter();
 
@@ -327,7 +330,7 @@ public class AnalizadorLexico {
 				obtenerSgteCaracter();
 				return true;
 
-			}else {
+			} else {
 				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
 			}
 
@@ -360,15 +363,15 @@ public class AnalizadorLexico {
 				return true;
 
 			}
-				
+
 		}
 
 		return false;
 	}
 
 	/**
-	 * Metodo que detectad los operadores aritmeticos
-	 * LISTO
+	 * Metodo que detectad los operadores aritmeticos LISTO
+	 * 
 	 * @return
 	 */
 	public boolean esOperadorAritmetico() {
@@ -401,8 +404,8 @@ public class AnalizadorLexico {
 					listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
 					return true;
 
-				} 
-				
+				}
+
 //				else {
 //
 //					if (caracterActual == '=') {
@@ -447,10 +450,8 @@ public class AnalizadorLexico {
 
 	/**
 	 * caracterActualcaracterActual Metodo que guarda los operadores logicos
-	 * FUNCIONA
-	 * & es equivalente a Y
-	 * @ es equivalente a O
-	 * ? es equivalente a diferente
+	 * FUNCIONA & es equivalente a Y @ es equivalente a O ? es equivalente a
+	 * diferente
 	 */
 	public boolean isOperadorLogico() {
 
@@ -558,7 +559,6 @@ public class AnalizadorLexico {
 
 							obtenerSgteCaracter();
 
-							System.out.println("entra");
 						}
 						palabra += caracterActual;
 
@@ -574,13 +574,14 @@ public class AnalizadorLexico {
 
 		return false;
 	}
-	
+
 	/**
 	 * Metodo para detectar las llaves
+	 * 
 	 * @return
 	 */
 	public boolean isLlave() {
-		
+
 		if (caracterActual == '{' || caracterActual == '}' || caracterActual == '[' || caracterActual == ']') {
 
 			int fila = filaActual;
@@ -594,21 +595,21 @@ public class AnalizadorLexico {
 			listaTokens.add(new Token(Categoria.LLAVES, palabra, fila, columna));
 
 			obtenerSgteCaracter();
-			
+
 			return true;
 		}
 
 		return false;
 	}
-	
-	
+
 	/**
 	 * Metodo para detectar los parentesis
+	 * 
 	 * @return
 	 */
 	public boolean isParentesis() {
-		
-		if (caracterActual == '(' || caracterActual == ')' ){
+
+		if (caracterActual == '(' || caracterActual == ')') {
 
 			int fila = filaActual;
 			int columna = colActual;
@@ -621,20 +622,21 @@ public class AnalizadorLexico {
 			listaTokens.add(new Token(Categoria.PARENTESIS, palabra, fila, columna));
 
 			obtenerSgteCaracter();
-			
+
 			return true;
 		}
 
 		return false;
 	}
-	
+
 	/**
 	 * Metodo para detectar el terminal ( ; )
+	 * 
 	 * @return
 	 */
 	public boolean isTerminal() {
-		
-		if (caracterActual == ';'){
+
+		if (caracterActual == ';') {
 
 			int fila = filaActual;
 			int columna = colActual;
@@ -647,21 +649,21 @@ public class AnalizadorLexico {
 			listaTokens.add(new Token(Categoria.TERMINAL, palabra, fila, columna));
 
 			obtenerSgteCaracter();
-			
+
 			return true;
 		}
 
 		return false;
 	}
-	
-	
+
 	/**
 	 * Metodo para detectar el separador ( , )
+	 * 
 	 * @return
 	 */
 	public boolean isSeparador() {
-		
-		if (caracterActual == ','){
+
+		if (caracterActual == ',') {
 
 			int fila = filaActual;
 			int columna = colActual;
@@ -674,15 +676,11 @@ public class AnalizadorLexico {
 			listaTokens.add(new Token(Categoria.SEPARADOR, palabra, fila, columna));
 
 			obtenerSgteCaracter();
-			
+
 			return true;
 		}
 
 		return false;
 	}
-	
-
-	
-
 
 }
