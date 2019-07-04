@@ -68,6 +68,12 @@ public class AnalizadorLexico {
 
 			if (isCadenaDeCaracteres())
 				continue;
+			
+			if(isLlave())
+				continue;
+			
+			if(isParentesis())
+				continue;
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
 		}
@@ -289,6 +295,10 @@ public class AnalizadorLexico {
 
 	/**
 	 * caracterActualcaracterActual Metodo que guarda los operadores logicos
+	 * FUNCIONA
+	 * & es equivalente a Y
+	 * @ es equivalente a O
+	 * ? es equivalente a diferente
 	 */
 	public boolean isOperadorLogico() {
 
@@ -358,7 +368,7 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metood cara detectar las cadenas de caracteres
+	 * Metodo para detectar las cadenas de caracteres
 	 * 
 	 * @return
 	 */
@@ -405,5 +415,62 @@ public class AnalizadorLexico {
 
 		return false;
 	}
+	
+	/**
+	 * Metodo para detectar las llaves
+	 * @return
+	 */
+	public boolean isLlave() {
+		
+		if (caracterActual == '{' || caracterActual == '}' || caracterActual == '[' || caracterActual == ']') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			listaTokens.add(new Token(Categoria.LLAVES, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+			
+			return true;
+		}
+
+		return false;
+	}
+	
+	
+	/**
+	 * Metodo para detectar los parentesis
+	 * @return
+	 */
+	public boolean isParentesis() {
+		
+		if (caracterActual == '(' || caracterActual == ')' ){
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			listaTokens.add(new Token(Categoria.PARENTESIS, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+			
+			return true;
+		}
+
+		return false;
+	}
+	
+
+	
+
 
 }
