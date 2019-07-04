@@ -76,7 +76,7 @@ public class AnalizadorLexico {
 
 	/**
 	 * Detecta los caracteres correspondientes a lso enteros
-	 * 
+	 * Funciona
 	 * @return
 	 */
 	public boolean esEntero() {
@@ -105,11 +105,15 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * 
+	 * REVISAR
+	 * SI SE PONE ALGUN IDENTIFICADOR AUTOMATICAMENTE TODO LO QUE SIGUE SE CONVIERTE EN IDENTIFICADOR Y SE CONCATENA
 	 * @return
 	 */
 	public boolean esIdentificador() {
 
+		/**
+		 * ESTE ES EL CAMBIO DE PRUEBA EN RAMA JAMES
+		 */
 		if (Character.isLetter(caracterActual) || caracterActual == '_'
 				|| caracterActual == '$' && caracterActual != 'd') {
 			String palabra = "";
@@ -154,6 +158,7 @@ public class AnalizadorLexico {
 	 */
 	public boolean esOperadorRelacional() {
 
+		
 		// OPeradores que por si solos ya son un operador relacional
 		if (caracterActual == '>' || caracterActual == '<') {
 
@@ -164,7 +169,6 @@ public class AnalizadorLexico {
 			// Transición
 			palabra += caracterActual;
 
-			listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
 
 			obtenerSgteCaracter();
 
@@ -178,8 +182,11 @@ public class AnalizadorLexico {
 
 				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
 
+				obtenerSgteCaracter();
 				return true;
 
+			}else {
+				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
 			}
 
 			if (!esRelacional(caracterActual)) {
@@ -206,10 +213,12 @@ public class AnalizadorLexico {
 				palabra += caracterActual;
 
 				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
+				obtenerSgteCaracter();
 
 				return true;
 
 			}
+				
 		}
 
 		return false;

@@ -7,7 +7,7 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		String codigoFuente = "1234h>=&jd@h?jfdhj#AABB212_palabra_67376478!=";
+		String codigoFuente = "<=>123!=";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
