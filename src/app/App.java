@@ -9,7 +9,7 @@ public class App {
 
 
 
-				String codigoFgoFuente = "1223t 122000  +==0.0233";
+				String codigoFuente = "1223t 122000  +==0.0233";
 
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
