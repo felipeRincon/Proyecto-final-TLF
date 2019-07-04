@@ -7,10 +7,11 @@ public class App {
 
 	public static void main(String arg[]) {
 
-
-
-				String codigoFuente = "1223t 122000  +==0.0233";
-
+		System.out.println(Character.isLetter('_'));
+		
+		
+		
+		String codigoFuente = "$cvffddd$dsds";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
@@ -24,4 +25,3 @@ public class App {
 
 	}
 }
- 

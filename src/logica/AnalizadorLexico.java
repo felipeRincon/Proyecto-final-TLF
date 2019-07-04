@@ -10,39 +10,56 @@ public class AnalizadorLexico {
 	// Lista de tokens que reconoce el analizador lexico
 	private ArrayList<Token> listaTokens;
 
-	//Caracter actual
+	// Palabras reservadas del lenguaje
+	private ArrayList<String> palabrasReservadas;
+
+	// Caracter actual
 	private char caracterActual;
 
 	//
 	private char finCodigo;
-	
-	//Posiciones para guardar los tokens y reconocer la posicion actual
+
+	// Posiciones para guardar los tokens y reconocer la posicion actual
 	private int posActual, colActual, filaActual;
 
-	
 	/**
 	 * Inicializamos
+	 * 
 	 * @param codigoFuente
 	 */
 	public AnalizadorLexico(String codigoFuente) {
 		this.codigoFuente = codigoFuente;
 		this.listaTokens = new ArrayList<Token>();
 		this.caracterActual = codigoFuente.charAt(posActual);
+		this.filaActual = 0;
+		this.colActual = 0;
 		this.finCodigo = 0;
+
+		this.palabrasReservadas = new ArrayList<String>();
+
+		palabrasReservadas.add("dInt");
+		palabrasReservadas.add("dInt");
+		palabrasReservadas.add("dInt");
+		palabrasReservadas.add("dInt");
+		palabrasReservadas.add("dInt");
+		palabrasReservadas.add("dInt");
+		palabrasReservadas.add("dInt");
+
 	}
 
 	/**
-	 * Metodo que oermite obtener el siguiente caracter
-	 * ademas permite ir actualizando la fila cada vez que detected un salto de linea
+	 * Metodo que oermite obtener el siguiente caracter ademas permite ir
+	 * actualizando la fila cada vez que detected un salto de linea
 	 */
+
 	public void obtenerSgteCaracter() {
 
 		posActual++;
 
-		//Verificamos que no se desborde
+		// Verificamos que no se desborde
 		if (posActual < codigoFuente.length()) {
 
-			if (caracterActual == '\n') {
+			if (caracterActual != '\n') {
 				filaActual++;
 				colActual = 0;
 			} else {
@@ -68,10 +85,10 @@ public class AnalizadorLexico {
 	 */
 	public void analizar() {
 
-		//Analizamos todo la fuente de entrada
+		// Analizamos todo la fuente de entrada
 		while (caracterActual != finCodigo) {
 
-			//Si son vacios o saltos de linea llamamos a obtener caracter
+			// Si son vacios o saltos de linea llamamos a obtener caracter
 			if (caracterActual == ' ' || caracterActual == '\n' || caracterActual == '\t') {
 				obtenerSgteCaracter();
 				continue;
@@ -93,9 +110,9 @@ public class AnalizadorLexico {
 
 			if (isCadenaDeCaracteres())
 				continue;
-			
-			
-			//Si el caracter llega a este punto es por que no lo reconocio ningun automota por la tanto es desconocido
+
+			// Si el caracter llega a este punto es por que no lo reconocio ningun automota
+			// por la tanto es desconocido
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
 		}
@@ -103,27 +120,27 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Detecta los caracteres  o cadenas de caracteres que correspondientes a los enteros
+	 * Detecta los caracteres o cadenas de caracteres que correspondientes a los
+	 * enteros
 	 * 
 	 * @return true si el token se agrego con exito
 	 */
 	public boolean isNumeronatural() {
 
-		
-		//Si el caracter corresponde a un digito
+		// Si el caracter corresponde a un digito
 		if (Character.isDigit(caracterActual)) {
-			
-		    //	inciamos palabra
+
+			// inciamos palabra
 			String palabra = "";
-			
-			//obtenemos la posicon para guradar el token
+
+			// obtenemos la posicon para guradar el token
 			int fila = filaActual;
 			int columna = colActual;
 
 			// Transición
 			palabra += caracterActual;
-			
-			//Como ya añadimos el caracter obtenemos el siguiente
+
+			// Como ya añadimos el caracter obtenemos el siguiente
 			obtenerSgteCaracter();
 
 			while (Character.isDigit(caracterActual)) {
@@ -148,18 +165,17 @@ public class AnalizadorLexico {
 	 */
 	public boolean esIdentificador() {
 
-		if (Character.isLetter(caracterActual) || caracterActual == '_'
-				|| caracterActual == '$' && caracterActual != 'd') {
+		if (Character.isLetter(caracterActual)) {
 			String palabra = "";
 			int fila = filaActual;
 			int columna = colActual;
 
-			// Transición
 			palabra += caracterActual;
+
 			obtenerSgteCaracter();
 
-			while (Character.isLetter(caracterActual) || caracterActual == '_' || caracterActual == '$'
-					|| Character.isDigit(caracterActual)) {
+			while (Character.isLetter(caracterActual) || Character.isDigit(caracterActual) && caracterActual != '$') {
+
 				palabra += caracterActual;
 				obtenerSgteCaracter();
 			}
@@ -169,7 +185,6 @@ public class AnalizadorLexico {
 
 		}
 
-		// RI
 		return false;
 	}
 
@@ -378,6 +393,7 @@ public class AnalizadorLexico {
 				}
 				listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
 
+				return true;
 			}
 
 		}
@@ -393,39 +409,47 @@ public class AnalizadorLexico {
 	 */
 	public boolean isCadenaDeCaracteres() {
 
-		if (caracterActual == '_') {
+		if (caracterActual == '$') {
+			{
 
-			int fila = filaActual;
-			int columna = colActual;
+				int fila = filaActual;
+				int columna = colActual;
 
-			String palabra = "";
+				String palabra = "";
 
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			if (caracterActual == '_') {
-
+				// Transición
 				palabra += caracterActual;
 
-				listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
+				obtenerSgteCaracter();
 
-				return true;
-
-			} else {
-
-				while (caracterActual != '_') {
+				if (caracterActual == '$') {
 
 					palabra += caracterActual;
 
-					obtenerSgteCaracter();
+					listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
+
+					return true;
+				} else {
+
+					String faltante = codigoFuente.substring(posActual + 1);
+
+					if (faltante.contains("$")) {
+
+						while (caracterActual != '$' && posActual < codigoFuente.length()) {
+							palabra += caracterActual;
+
+							obtenerSgteCaracter();
+
+							System.out.println("entra");
+						}
+						palabra += caracterActual;
+
+						listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
+
+						return true;
+					}
 
 				}
-
-				palabra += caracterActual;
-				listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
-
-				return true;
-
 			}
 
 		}
