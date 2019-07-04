@@ -74,6 +74,11 @@ public class AnalizadorLexico {
 			
 			if(isParentesis())
 				continue;
+			
+			if(isTerminal())
+				continue;
+			if(isSeparador())
+				continue;
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
 		}
@@ -460,6 +465,59 @@ public class AnalizadorLexico {
 			palabra += caracterActual;
 
 			listaTokens.add(new Token(Categoria.PARENTESIS, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+			
+			return true;
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Metodo para detectar el terminal ( ; )
+	 * @return
+	 */
+	public boolean isTerminal() {
+		
+		if (caracterActual == ';'){
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			listaTokens.add(new Token(Categoria.TERMINAL, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+			
+			return true;
+		}
+
+		return false;
+	}
+	
+	
+	/**
+	 * Metodo para detectar el separador ( , )
+	 * @return
+	 */
+	public boolean isSeparador() {
+		
+		if (caracterActual == ','){
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			listaTokens.add(new Token(Categoria.SEPARADOR, palabra, fila, columna));
 
 			obtenerSgteCaracter();
 			

@@ -7,7 +7,7 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		String codigoFuente = "hola {hola}[hola](hola)";
+		String codigoFuente = "hola {hola}[hola](hola);;,,";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
