@@ -94,6 +94,9 @@ public class AnalizadorLexico {
 				continue;
 			}
 
+			if (isNumeroReal())
+				continue;
+
 			if (isNumeronatural())
 				continue;
 			if (esIdentificador())
@@ -157,6 +160,88 @@ public class AnalizadorLexico {
 		}
 
 		// RI
+		return false;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isNumeroReal() {
+
+		if (Character.isDigit(caracterActual)) {
+
+			// inciamos palabra
+			String palabra = "";
+
+			// obtenemos la posicon para guradar el token
+			int fila = filaActual;
+			int columna = colActual;
+
+			// Transición
+			palabra += caracterActual;
+
+			// Como ya añadimos el caracter obtenemos el siguiente
+			obtenerSgteCaracter();
+
+			while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
+
+				// Transición
+				palabra += caracterActual;
+
+				// Como ya añadimos el caracter obtenemos el siguiente
+				obtenerSgteCaracter();
+
+			}
+
+			if (caracterActual == '.') {
+
+				palabra += caracterActual;
+				obtenerSgteCaracter();
+
+				while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
+
+					palabra += caracterActual;
+
+					obtenerSgteCaracter();
+
+				}
+
+				listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+				return true;
+
+			}
+
+		}
+
+		//Se puede iniciar directamente con punto
+		if (caracterActual == '.') {
+
+			// inciamos palabra
+			String palabra = "";
+
+			// obtenemos la posicon para guradar el token
+			int fila = filaActual;
+			int columna = colActual;
+
+			// Transición
+			palabra += caracterActual;
+
+			// Como ya añadimos el caracter obtenemos el siguiente
+			obtenerSgteCaracter();
+
+			//Si son digitos empezamos a concatenar
+			while (Character.isDigit(caracterActual)) {
+				palabra += caracterActual;
+
+				obtenerSgteCaracter();
+
+			}
+
+			listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+			return true;
+		}
+
 		return false;
 	}
 
@@ -272,8 +357,8 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Operadores aritmeticos
-	 * METODO CORREGIDO
+	 * Operadores aritmeticos METODO CORREGIDO
+	 * 
 	 * @return
 	 */
 	public boolean operadoresAritmeticos() {
