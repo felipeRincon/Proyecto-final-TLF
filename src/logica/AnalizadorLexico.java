@@ -391,21 +391,23 @@ public class AnalizadorLexico {
 					listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
 					return true;
 
-				} else {
-
-					if (caracterActual == '=') {
-
-						fila = filaActual;
-						columna = colActual;
-
-						// Transición
-						palabra += caracterActual;
-
-						listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
-						return true;
-
-					}
-				}
+				} 
+				
+//				else {
+//
+//					if (caracterActual == '=') {
+//
+//						fila = filaActual;
+//						columna = colActual;
+//
+//						// Transición
+//						palabra += caracterActual;
+//
+//						listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+//						return true;
+//
+//					}
+//				}
 
 			}
 			if (caraterAnterio == '+') {
