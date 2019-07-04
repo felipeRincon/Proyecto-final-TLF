@@ -94,10 +94,10 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			if (isNumeroReal())
+			if (esNumeroReal())
 				continue;
 
-			if (isNumeronatural())
+			if (esNumeronatural())
 				continue;
 			if (esIdentificador())
 				continue;
@@ -114,7 +114,7 @@ public class AnalizadorLexico {
 			if (isCadenaDeCaracteres())
 				continue;
 
-			if (operadoresAritmeticos())
+			if (esOperadorAritmetico())
 
 				continue;
 			// Si el caracter llega a este punto es por que no lo reconocio ningun automota
@@ -128,10 +128,10 @@ public class AnalizadorLexico {
 	/**
 	 * Detecta los caracteres o cadenas de caracteres que correspondientes a los
 	 * enteros
-	 * 
+	 * ESTA LISTO
 	 * @return true si el token se agrego con exito
 	 */
-	public boolean isNumeronatural() {
+	public boolean esNumeronatural() {
 
 		// Si el caracter corresponde a un digito
 		if (Character.isDigit(caracterActual)) {
@@ -164,10 +164,10 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * 
+	 * Metodo que detectad los numerosReales
 	 * @return
 	 */
-	public boolean isNumeroReal() {
+	public boolean esNumeroReal() {
 
 		if (Character.isDigit(caracterActual)) {
 
@@ -357,11 +357,11 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Operadores aritmeticos METODO CORREGIDO
-	 * 
+	 * Metodo que detectad los operadores aritmeticos
+	 * LISTO
 	 * @return
 	 */
-	public boolean operadoresAritmeticos() {
+	public boolean esOperadorAritmetico() {
 
 		if (caracterActual == '*' || caracterActual == '/' || caracterActual == '%' || caracterActual == '+'
 				|| caracterActual == '-') {
