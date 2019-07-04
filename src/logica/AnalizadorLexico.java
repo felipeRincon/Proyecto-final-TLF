@@ -111,6 +111,9 @@ public class AnalizadorLexico {
 	 */
 	public boolean esIdentificador() {
 
+		/**
+		 * ESTE ES EL CAMBIO DE PRUEBA EN RAMA JAMES
+		 */
 		if (Character.isLetter(caracterActual) || caracterActual == '_'
 				|| caracterActual == '$' && caracterActual != 'd') {
 			String palabra = "";
