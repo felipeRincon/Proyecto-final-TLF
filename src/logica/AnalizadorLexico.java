@@ -155,6 +155,8 @@ public class AnalizadorLexico {
 	 */
 	public boolean esOperadorRelacional() {
 
+		//Esto es un cambio
+		
 		// OPeradores que por si solos ya son un operador relacional
 		if (caracterActual == '>' || caracterActual == '<') {
 
