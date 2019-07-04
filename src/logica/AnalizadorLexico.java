@@ -4,11 +4,26 @@ import java.util.ArrayList;
 
 public class AnalizadorLexico {
 
+	// Codigo fuente que va ser analizado
 	private String codigoFuente;
+
+	// Lista de tokens que reconoce el analizador lexico
 	private ArrayList<Token> listaTokens;
-	private char caracterActual, finCodigo;
+
+	//Caracter actual
+	private char caracterActual;
+
+	//
+	private char finCodigo;
+	
+	//Posiciones para guardar los tokens y reconocer la posicion actual
 	private int posActual, colActual, filaActual;
 
+	
+	/**
+	 * Inicializamos
+	 * @param codigoFuente
+	 */
 	public AnalizadorLexico(String codigoFuente) {
 		this.codigoFuente = codigoFuente;
 		this.listaTokens = new ArrayList<Token>();
@@ -17,22 +32,26 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo para obtener el siguente caracter
+	 * Metodo que oermite obtener el siguiente caracter
+	 * ademas permite ir actualizando la fila cada vez que detected un salto de linea
 	 */
 	public void obtenerSgteCaracter() {
 
 		posActual++;
 
+		//Verificamos que no se desborde
 		if (posActual < codigoFuente.length()) {
 
 			if (caracterActual == '\n') {
 				filaActual++;
 				colActual = 0;
 			} else {
+
 				colActual++;
 			}
 
 			caracterActual = codigoFuente.charAt(posActual);
+
 		} else {
 			caracterActual = finCodigo;
 		}
@@ -43,16 +62,22 @@ public class AnalizadorLexico {
 		return listaTokens;
 	}
 
+	/**
+	 * Metodo principal del analizador lexico
+	 * 
+	 */
 	public void analizar() {
 
+		//Analizamos todo la fuente de entrada
 		while (caracterActual != finCodigo) {
 
+			//Si son vacios o saltos de linea llamamos a obtener caracter
 			if (caracterActual == ' ' || caracterActual == '\n' || caracterActual == '\t') {
 				obtenerSgteCaracter();
 				continue;
 			}
 
-			if (esEntero())
+			if (isNumeronatural())
 				continue;
 			if (esIdentificador())
 				continue;
@@ -68,6 +93,9 @@ public class AnalizadorLexico {
 
 			if (isCadenaDeCaracteres())
 				continue;
+			
+			
+			//Si el caracter llega a este punto es por que no lo reconocio ningun automota por la tanto es desconocido
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
 		}
@@ -75,19 +103,27 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Detecta los caracteres correspondientes a lso enteros
+	 * Detecta los caracteres  o cadenas de caracteres que correspondientes a los enteros
 	 * 
-	 * @return
+	 * @return true si el token se agrego con exito
 	 */
-	public boolean esEntero() {
+	public boolean isNumeronatural() {
 
+		
+		//Si el caracter corresponde a un digito
 		if (Character.isDigit(caracterActual)) {
+			
+		    //	inciamos palabra
 			String palabra = "";
+			
+			//obtenemos la posicon para guradar el token
 			int fila = filaActual;
 			int columna = colActual;
 
 			// Transición
 			palabra += caracterActual;
+			
+			//Como ya añadimos el caracter obtenemos el siguiente
 			obtenerSgteCaracter();
 
 			while (Character.isDigit(caracterActual)) {
@@ -95,7 +131,7 @@ public class AnalizadorLexico {
 				obtenerSgteCaracter();
 			}
 
-			listaTokens.add(new Token(Categoria.ENTERO, palabra, fila, columna));
+			listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
 			return true;
 
 		}
@@ -103,6 +139,8 @@ public class AnalizadorLexico {
 		// RI
 		return false;
 	}
+
+	// public boolean isNumeroReal()
 
 	/**
 	 * 
@@ -383,13 +421,11 @@ public class AnalizadorLexico {
 
 				}
 
-				palabra+=caracterActual;
+				palabra += caracterActual;
 				listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
 
 				return true;
-				
-				
-				
+
 			}
 
 		}

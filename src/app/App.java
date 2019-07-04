@@ -7,7 +7,10 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		String codigoFuente = "1234h>=&jd@h?jfdhj#AABB212_palabra_67376478!=";
+
+
+				String codigoFgoFuente = "1223t 122000  +==0.0233";
+
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
@@ -21,3 +24,4 @@ public class App {
 
 	}
 }
+ 
