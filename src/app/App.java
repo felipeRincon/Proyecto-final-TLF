@@ -7,11 +7,10 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		System.out.println(Character.isLetter('_'));
 		
 		
 		
-		String codigoFuente = "$cvffddd$dsds";
+		String codigoFuente = "$cvff dd$dsds  --sasaddff++ddfdf%  ! ";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();

@@ -287,9 +287,7 @@ public class AnalizadorLexico {
 
 			// Transición
 			palabra += caracterActual;
-
-			listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
-
+			listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
 			obtenerSgteCaracter();
 
 			if (caraterAnterio != '+' || caraterAnterio == '-') {
@@ -302,9 +300,7 @@ public class AnalizadorLexico {
 					// Transición
 					palabra += caracterActual;
 
-					listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
-
-					return true;
+					listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
 
 				} else {
 
@@ -316,14 +312,14 @@ public class AnalizadorLexico {
 						// Transición
 						palabra += caracterActual;
 
-						listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
-
-						return true;
+						listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
 
 					}
 				}
 
 			}
+
+			return true;
 
 		}
 
