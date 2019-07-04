@@ -111,6 +111,9 @@ public class AnalizadorLexico {
 			if (isCadenaDeCaracteres())
 				continue;
 
+			if (operadoresAritmeticos())
+
+				continue;
 			// Si el caracter llega a este punto es por que no lo reconocio ningun automota
 			// por la tanto es desconocido
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
@@ -270,7 +273,7 @@ public class AnalizadorLexico {
 
 	/**
 	 * Operadores aritmeticos
-	 * 
+	 * METODO CORREGIDO
 	 * @return
 	 */
 	public boolean operadoresAritmeticos() {
@@ -290,7 +293,7 @@ public class AnalizadorLexico {
 			listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
 			obtenerSgteCaracter();
 
-			if (caraterAnterio != '+' || caraterAnterio == '-') {
+			if (caraterAnterio == '-') {
 
 				if (caracterActual == caraterAnterio) {
 
@@ -301,6 +304,7 @@ public class AnalizadorLexico {
 					palabra += caracterActual;
 
 					listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+					return true;
 
 				} else {
 
@@ -313,8 +317,25 @@ public class AnalizadorLexico {
 						palabra += caracterActual;
 
 						listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+						return true;
 
 					}
+				}
+
+			}
+			if (caraterAnterio == '+') {
+
+				if (caracterActual == caraterAnterio) {
+
+					fila = filaActual;
+					columna = colActual;
+
+					// Transición
+					palabra += caracterActual;
+
+					listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+					return true;
+
 				}
 
 			}

@@ -7,10 +7,7 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		
-		
-		
-		String codigoFuente = "$cvff dd$dsds  --sasaddff++ddfdf%  ! ";
+		String codigoFuente = "$cvff d**d$dsds %%**** >>>>=--sasaddff+++ddfdf ! ";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
