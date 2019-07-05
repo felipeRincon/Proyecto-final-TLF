@@ -94,40 +94,14 @@ public class AnalizadorLexico {
 				continue;
 			}
 
+			// Numeros naturales contando el 0 probado y listo
+			if (esNumeroNatural())
+				continue;
+
+			// Si es un numero real (decimal)
 			if (esNumeroReal())
 				continue;
 
-			if (esNumeronatural())
-				continue;
-			if (esIdentificador())
-				continue;
-
-			if (esOperadorAritmetico())
-				continue;
-
-			if (esOperadorRelacional())
-				continue;
-
-			if (isOperadorLogico())
-				continue;
-
-			if (isHexadecimal())
-				continue;
-
-			if (isCadenaDeCaracteres())
-				continue;
-
-			if (isLlave())
-				continue;
-
-			if (isParentesis())
-				continue;
-
-			if (isTerminal())
-				continue;
-
-			if (isSeparador())
-				continue;
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
 		}
@@ -136,11 +110,11 @@ public class AnalizadorLexico {
 
 	/**
 	 * Detecta los caracteres o cadenas de caracteres que correspondientes a los
-	 * enteros ESTA LISTO
+	 * enteros SE PROBO ESTA LISTO
 	 * 
 	 * @return true si el token se agrego con exito
 	 */
-	public boolean esNumeronatural() {
+	public boolean esNumeroNatural() {
 
 		// Si el caracter corresponde a un digito
 		if (Character.isDigit(caracterActual)) {
@@ -158,17 +132,76 @@ public class AnalizadorLexico {
 			// Como ya añadimos el caracter obtenemos el siguiente
 			obtenerSgteCaracter();
 
-			while (Character.isDigit(caracterActual)) {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-			}
+			if (Character.isDigit(caracterActual)) {
 
-			listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
-			return true;
+				while (Character.isDigit(caracterActual)) {
+					palabra += caracterActual;
+					obtenerSgteCaracter();
+				}
+
+				// Por que si no seria un tipo real
+				if (caracterActual != '.') {
+
+					listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
+					return true;
+
+				}
+			} else {
+
+				if (caracterActual != '.') {
+
+					listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
+					return true;
+
+				} else {
+
+					posActual = fila;
+
+					filaActual = fila;
+
+					colActual = columna;
+
+				}
+
+			}
 
 		}
 
 		// RI
+		return false;
+	}
+
+	public boolean esNumeroNAtura2() {
+
+		if (Character.isDigit(caracterActual)) {
+
+			int fila = filaActual;
+
+			int columna = colActual;
+
+			String palabra = "";
+
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+
+			while (Character.isDigit(caracterActual)) {
+
+				palabra += caracterActual;
+
+				obtenerSgteCaracter();
+			}
+			
+			if(caracterActual!='.') {
+				
+				
+				listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
+				return true;
+				
+			}
+
+		}
+		
 		return false;
 	}
 
@@ -287,6 +320,34 @@ public class AnalizadorLexico {
 	}
 
 	/**
+	 * Metodo que detectad los operadores aritmeticos LISTO
+	 * 
+	 * @return
+	 */
+	public boolean esOperadorAritmetico() {
+
+		if (caracterActual == '*' || caracterActual == '/' || caracterActual == '%' || caracterActual == '+'
+				|| caracterActual == '-') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			System.out.println(caracterActual);
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+			listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	/**
 	 * Metodo que valida si el caracter pertenece a los relacionales
 	 * 
 	 * @return
@@ -370,90 +431,11 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que detectad los operadores aritmeticos LISTO
-	 * 
-	 * @return
-	 */
-	public boolean esOperadorAritmetico() {
-
-		if (caracterActual == '*' || caracterActual == '/' || caracterActual == '%' || caracterActual == '+'
-				|| caracterActual == '-') {
-
-			char caraterAnterio = caracterActual;
-
-			int fila = filaActual;
-			int columna = colActual;
-
-			String palabra = "";
-
-			// Transición
-			palabra += caracterActual;
-			listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
-			obtenerSgteCaracter();
-
-			if (caraterAnterio == '-') {
-
-				if (caracterActual == caraterAnterio) {
-
-					fila = filaActual;
-					columna = colActual;
-
-					// Transición
-					palabra += caracterActual;
-
-					listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
-					return true;
-
-				}
-
-//				else {
-//
-//					if (caracterActual == '=') {
-//
-//						fila = filaActual;
-//						columna = colActual;
-//
-//						// Transición
-//						palabra += caracterActual;
-//
-//						listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
-//						return true;
-//
-//					}
-//				}
-
-			}
-			if (caraterAnterio == '+') {
-
-				if (caracterActual == caraterAnterio) {
-
-					fila = filaActual;
-					columna = colActual;
-
-					// Transición
-					palabra += caracterActual;
-
-					listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
-					return true;
-
-				}
-
-			}
-
-			return true;
-
-		}
-
-		return false;
-
-	}
-
-	/**
 	 * caracterActualcaracterActual Metodo que guarda los operadores logicos
 	 * FUNCIONA & es equivalente a Y @ es equivalente a O ? es equivalente a
 	 * diferente
 	 */
-	public boolean isOperadorLogico() {
+	public boolean esOperadorLogico() {
 
 		if (caracterActual == '&' || caracterActual == '@' || caracterActual == '?') {
 
@@ -475,11 +457,203 @@ public class AnalizadorLexico {
 	}
 
 	/**
+	 * Registra los operadores de asignacion
+	 * 
+	 * @return true si conrresponde a la categoria
+	 */
+	public boolean esOperadorDeAsignacion() {
+
+		// Si es uno de aumento y asignacion simultanea
+		if (caracterActual == '+' || caracterActual == '-' || caracterActual == '*' || caracterActual == '/'
+				|| caracterActual == '%') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+			obtenerSgteCaracter();
+
+			// para guardarse debe llegar
+			if (caracterActual == '=') {
+				// Transición
+				palabra += caracterActual;
+				listaTokens.add(new Token(Categoria.OPERADORES_DE_ASIGNACION, palabra, fila, columna));
+
+				return true;
+			}
+
+		}
+
+		// Si es uno de asignacion normal
+		if (caracterActual == '=') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+			listaTokens.add(new Token(Categoria.OPERADORES_DE_ASIGNACION, palabra, fila, columna));
+
+			return true;
+
+		}
+		return false;
+
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean esOperadorDeIncremento() {
+
+		if (caracterActual == '+' || caracterActual == '-') {
+
+			char caraterAnterior = caracterActual;
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+			if (caracterActual == caraterAnterior) {
+
+				palabra += caracterActual;
+				listaTokens.add(new Token(Categoria.OPERADOR_DE_INCREMENTO, palabra, fila, columna));
+
+				return true;
+
+			}
+
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Metodo para detectar los parentesis CUADRAR PARA APERTURA Y CIERRE
+	 * 
+	 * @return
+	 */
+	public boolean isParentesis() {
+
+		if (caracterActual == '(' || caracterActual == ')') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			listaTokens.add(new Token(Categoria.PARENTESIS, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Metodo para detectar las llaves CUADRAR PARA QUE SEA DE APERTURA Y CIERRE
+	 * 
+	 * @return
+	 */
+	public boolean esLlave() {
+
+		if (caracterActual == '{' || caracterActual == '}' || caracterActual == '[' || caracterActual == ']') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			listaTokens.add(new Token(Categoria.LLAVES, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Metodo para detectar el terminal ( ; )
+	 * 
+	 * @return
+	 */
+	public boolean esTerminal() {
+
+		if (caracterActual == ';') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			listaTokens.add(new Token(Categoria.TERMINAL, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Metodo para detectar el separador ( , )
+	 * 
+	 * @return
+	 */
+	public boolean esSeparador() {
+
+		if (caracterActual == ',') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			listaTokens.add(new Token(Categoria.SEPARADOR, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Caracteres del lenguaje hexadecimal
 	 * 
 	 * @return
 	 */
-	public boolean isCaracterHexadecimal() {
+	public boolean esCaracterHexadecimal() {
 
 		return caracterActual == '0' || caracterActual == '1' || caracterActual == '2' || caracterActual == 'A'
 				|| caracterActual == 'B';
@@ -503,9 +677,9 @@ public class AnalizadorLexico {
 
 			obtenerSgteCaracter();
 
-			if (isCaracterHexadecimal()) {
+			if (esCaracterHexadecimal()) {
 
-				while (isCaracterHexadecimal()) {
+				while (esCaracterHexadecimal()) {
 
 					palabra += caracterActual;
 					obtenerSgteCaracter();
@@ -576,111 +750,7 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo para detectar las llaves
-	 * 
-	 * @return
+	 * REALIZAR EL METODO DE LOS COMENTARIOS
 	 */
-	public boolean isLlave() {
-
-		if (caracterActual == '{' || caracterActual == '}' || caracterActual == '[' || caracterActual == ']') {
-
-			int fila = filaActual;
-			int columna = colActual;
-
-			String palabra = "";
-
-			// Transición
-			palabra += caracterActual;
-
-			listaTokens.add(new Token(Categoria.LLAVES, palabra, fila, columna));
-
-			obtenerSgteCaracter();
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Metodo para detectar los parentesis
-	 * 
-	 * @return
-	 */
-	public boolean isParentesis() {
-
-		if (caracterActual == '(' || caracterActual == ')') {
-
-			int fila = filaActual;
-			int columna = colActual;
-
-			String palabra = "";
-
-			// Transición
-			palabra += caracterActual;
-
-			listaTokens.add(new Token(Categoria.PARENTESIS, palabra, fila, columna));
-
-			obtenerSgteCaracter();
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Metodo para detectar el terminal ( ; )
-	 * 
-	 * @return
-	 */
-	public boolean isTerminal() {
-
-		if (caracterActual == ';') {
-
-			int fila = filaActual;
-			int columna = colActual;
-
-			String palabra = "";
-
-			// Transición
-			palabra += caracterActual;
-
-			listaTokens.add(new Token(Categoria.TERMINAL, palabra, fila, columna));
-
-			obtenerSgteCaracter();
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Metodo para detectar el separador ( , )
-	 * 
-	 * @return
-	 */
-	public boolean isSeparador() {
-
-		if (caracterActual == ',') {
-
-			int fila = filaActual;
-			int columna = colActual;
-
-			String palabra = "";
-
-			// Transición
-			palabra += caracterActual;
-
-			listaTokens.add(new Token(Categoria.SEPARADOR, palabra, fila, columna));
-
-			obtenerSgteCaracter();
-
-			return true;
-		}
-
-		return false;
-	}
 
 }

@@ -7,7 +7,8 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		String codigoFuente = "$cvff d**d$dsds %>>=--sasaddff+++ddfdf ! , () {{ddfd{df  .1213  1212zaddf   1212.1212 ";
+		//Validar en la interfaz que el codigo fuente no sea vacio
+		String codigoFuente = "2.223 2323s 44.34";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
