@@ -2,6 +2,8 @@ package logica;
 
 import java.util.ArrayList;
 
+import sun.security.x509.CertificateIssuerName;
+
 public class AnalizadorLexico {
 
 	// Codigo fuente que va ser analizado
@@ -105,9 +107,16 @@ public class AnalizadorLexico {
 			// Metodo en prueba
 			if (esHexadecimal())
 				continue;
-			
-			 if(esComentario())
-				 continue;
+
+			// metodo probado
+			if (esComentario())
+				continue;
+
+			if (esOperadorDeAsignacion())
+				continue;
+
+			if (esOperadorAritmetico())
+				continue;
 
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
@@ -520,13 +529,12 @@ public class AnalizadorLexico {
 			int fila = filaActual;
 			int columna = colActual;
 
-			System.out.println(caracterActual);
 			String palabra = "";
 
 			// Transición
 			palabra += caracterActual;
 			listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
-
+			obtenerSgteCaracter();
 			return true;
 
 		}
@@ -669,7 +677,8 @@ public class AnalizadorLexico {
 				// Transición
 				palabra += caracterActual;
 				listaTokens.add(new Token(Categoria.OPERADORES_DE_ASIGNACION, palabra, fila, columna));
-
+                
+				obtenerSgteCaracter();
 				return true;
 			}
 
@@ -687,6 +696,7 @@ public class AnalizadorLexico {
 			palabra += caracterActual;
 			listaTokens.add(new Token(Categoria.OPERADORES_DE_ASIGNACION, palabra, fila, columna));
 
+			obtenerSgteCaracter();
 			return true;
 
 		}
@@ -695,6 +705,7 @@ public class AnalizadorLexico {
 	}
 
 	/**
+	 * Guarda los operadores de incremento
 	 * 
 	 * @return
 	 */
@@ -717,7 +728,7 @@ public class AnalizadorLexico {
 
 				palabra += caracterActual;
 				listaTokens.add(new Token(Categoria.OPERADOR_DE_INCREMENTO, palabra, fila, columna));
-
+				obtenerSgteCaracter();
 				return true;
 
 			}
@@ -879,7 +890,7 @@ public class AnalizadorLexico {
 				}
 
 				listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
-
+				obtenerSgteCaracter();
 				return true;
 			}
 
@@ -914,7 +925,7 @@ public class AnalizadorLexico {
 					palabra += caracterActual;
 
 					listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
-
+					obtenerSgteCaracter();
 					return true;
 				} else {
 
@@ -931,7 +942,8 @@ public class AnalizadorLexico {
 						palabra += caracterActual;
 
 						listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
-
+						obtenerSgteCaracter();
+						
 						return true;
 					}
 
@@ -958,12 +970,9 @@ public class AnalizadorLexico {
 
 			int columna = colActual;
 
-			
 			palabra += caracterActual;
-			
-			obtenerSgteCaracter();
 
-			
+			obtenerSgteCaracter();
 
 			while (Character.isLetter(caracterActual) || Character.isDigit(caracterActual)) {
 
@@ -973,11 +982,11 @@ public class AnalizadorLexico {
 
 			}
 
-			palabra+=caracterActual;
+			palabra += caracterActual;
 			if (caracterActual == '_') {
 
 				listaTokens.add(new Token(Categoria.COMENTARIO, palabra, fila, columna));
-
+				obtenerSgteCaracter();
 				return true;
 
 			}
