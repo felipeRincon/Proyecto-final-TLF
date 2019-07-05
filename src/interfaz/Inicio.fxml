@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: #313335;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaz.Controller">
+   <children>
+      <BorderPane layoutX="100.0" layoutY="49.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #313335;" BorderPane.alignment="CENTER">
+               <children>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="400.0" prefWidth="586.0" style="-fx-background-color: #2B2B2B; -fx-background-radius: 20 20 20;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </padding>
+                     <content>
+                        <TextArea fx:id="txtArea" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2B2B2B; -fx-text-fill: #313335;">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </TextArea>
+                     </content>
+                  </ScrollPane>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </AnchorPane>
+         </center>
+         <left>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #313335;" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" layoutX="61.0" layoutY="174.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #2B2B2B; -fx-background-radius: 20 20 20 20;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <opaqueInsets>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </padding>
+                     <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="381.0" prefWidth="310.0">
+                           <content>
+                              <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="Palabra" />
+                                    <TableColumn prefWidth="75.0" text="Categoria" />
+                                    <TableColumn prefWidth="75.0" text="Fila" />
+                                    <TableColumn prefWidth="75.0" text="Columna" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </AnchorPane>
+         </left>
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="Automatas">
+                  <items>
+                    <MenuItem fx:id="menuNoNaturales" mnemonicParsing="false" onAction="#onButtonNoNaturales" text="Numeros naturales" />
+                        <MenuItem fx:id="menuNoReales" mnemonicParsing="false" onAction="#onButtonNoReales" text="Numeros reales" />
+                        <MenuItem fx:id="menuIdentificadores" mnemonicParsing="false" onAction="#onButtonIdentificadores" text="Identificadores" />
+                        <MenuItem fx:id="menuOpAritmeticos" mnemonicParsing="false" onAction="#onButtonOpAritmeticos" text="Operadores aritmeticos" />
+                        <MenuItem fx:id="menuOpRelacionales" mnemonicParsing="false" onAction="#onButtonOpRelacionales" text="Operadores relacionales" />
+                        <MenuItem fx:id="menuOpLogicos" mnemonicParsing="false" onAction="#onButtonOpLogicos" text="Operadores logicos" />
+                        <MenuItem fx:id="menuOpAsignacion" mnemonicParsing="false" onAction="#onButtonOpAisgnacion" text="Operadores de asignacion" />
+                        <MenuItem fx:id="menuOpIncremento" mnemonicParsing="false" onAction="#onButtonOpIncremento" text="Operadores de incremento/Decremento" />
+                        <MenuItem fx:id="menuParentesis" mnemonicParsing="false" onAction="#onButtonParentesis" text="Parentesis" />
+                        <MenuItem fx:id="menuLlaves" mnemonicParsing="false" onAction="#onButtonLlaves" text="Llaves" />
+                        <MenuItem fx:id="menuTerminal" mnemonicParsing="false" onAction="#onButtonTerminal" text="Terminal" />
+                        <MenuItem fx:id="menuSeparador" mnemonicParsing="false" onAction="#onButtonSeparador" text="Separador" />
+                        <MenuItem fx:id="menuHexa" mnemonicParsing="false" onAction="#onButtonHexa" text="Hexadecimal" />
+                        <MenuItem fx:id="menuCadena" mnemonicParsing="false" onAction="#onButtonCadena" text="Cadenas de caracteres" />
+                        <MenuItem fx:id="menuComentarios" mnemonicParsing="false" onAction="#onButtonComentarios" text="Comentarios" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Analizar">
+                    <items>
+                      <MenuItem fx:id="btnAnalizar" mnemonicParsing="false" onAction="#onButtonAnalizar" text="Analizar" />
+                    </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>
