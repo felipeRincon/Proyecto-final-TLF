@@ -10,8 +10,7 @@ import logica.Token;
 
 public class Controller {
 
-	@FXML
-	private MenuItem btnAnalizar;
+	
 
 	@FXML
 	private TextArea txtArea;
@@ -61,6 +60,7 @@ public class Controller {
 	@FXML
 	private MenuItem menuComentarios;
 
+	//
 	@FXML
 	void onButtonAnalizar(ActionEvent event) {
 

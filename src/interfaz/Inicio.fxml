@@ -42,11 +42,6 @@
                         <MenuItem fx:id="menuComentarios" mnemonicParsing="false" onAction="#onButtonComentarios" text="Comentarios" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Analizar">
-                    <items>
-                      <MenuItem fx:id="btnAnalizar" mnemonicParsing="false" onAction="#onButtonAnalizar" text="Analizar" />
-                    </items>
-                  </Menu>
               </menus>
             </MenuBar>
          </top>
@@ -102,7 +97,7 @@
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="319.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
                                     <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="400.0" prefWidth="586.0" style="-fx-background-color: #313335; -fx-background-radius: 20 20 20;">
@@ -114,7 +109,7 @@
                                           </TextArea>
                                        </content>
                                     </ScrollPane>
-                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Analizar" GridPane.rowIndex="1">
+                                    <Button fx:id="btnAnalizar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonAnalizar" text="Analizar" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets bottom="5.0" left="100.0" right="100.0" top="5.0" />
                                        </GridPane.margin>

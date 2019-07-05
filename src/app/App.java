@@ -15,7 +15,7 @@ public class App extends Application{
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/interfaz/Inicio.fxml"));
         primaryStage.setTitle("Anaizador Lexico");
-        primaryStage.setScene(new Scene(root, 800, 400));
+        primaryStage.setScene(new Scene(root, 800, 450));
         primaryStage.show();
     }
     
