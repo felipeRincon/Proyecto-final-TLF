@@ -792,6 +792,8 @@ public class AnalizadorLexico {
 	/**
 	 * SOLUCIONAR
 	 * Detecta si el caracter es hexadecimal
+	 * 
+	 * 
 	 */
 	public boolean esHexadecimal() {
 
