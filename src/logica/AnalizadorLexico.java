@@ -48,7 +48,7 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que oermite obtener el siguiente caracter ademas permite ir
+	 * Metodo que permite obtener el siguiente caracter ademas permite ir
 	 * actualizando la fila cada vez que detected un salto de linea
 	 */
 
@@ -94,14 +94,22 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			// Numeros naturales contando el 0 probado y listo
-			if (esNumeroNatural())
+			// Numeros naturales y reales listo
+			if (esNumero())
 				continue;
 
-			// Si es un numero real (decimal)
-			if (esNumeroReal())
+
+			if(esHexadecimal())
+				continue;
+			
+			if (esIdentificador())
 				continue;
 
+			
+			if(esHexadecimal())
+				continue;
+			
+			
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
 		}
@@ -114,64 +122,69 @@ public class AnalizadorLexico {
 	 * 
 	 * @return true si el token se agrego con exito
 	 */
-	public boolean esNumeroNatural() {
+//	public boolean esNumeroNatural() {
+//
+//		// Si el caracter corresponde a un digito
+//		if (Character.isDigit(caracterActual)) {
+//
+//			// inciamos palabra
+//			String palabra = "";
+//
+//			// obtenemos la posicon para guradar el token
+//			int fila = filaActual;
+//			int columna = colActual;
+//
+//			// Transición
+//			palabra += caracterActual;
+//
+//			// Como ya añadimos el caracter obtenemos el siguiente
+//			obtenerSgteCaracter();
+//
+//			if (Character.isDigit(caracterActual)) {
+//
+//				while (Character.isDigit(caracterActual)) {
+//					palabra += caracterActual;
+//					obtenerSgteCaracter();
+//				}
+//
+//				// Por que si no seria un tipo real
+//				if (caracterActual != '.') {
+//
+//					listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
+//					return true;
+//
+//				}
+//			} else {
+//
+//				if (caracterActual != '.') {
+//
+//					listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
+//					return true;
+//
+//				} else {
+//
+//					posActual = fila;
+//
+//					filaActual = fila;
+//
+//					colActual = columna;
+//
+//				}
+//
+//			}
+//
+//		}
+//
+//		// RI
+//		return false;
+//	}
 
-		// Si el caracter corresponde a un digito
-		if (Character.isDigit(caracterActual)) {
-
-			// inciamos palabra
-			String palabra = "";
-
-			// obtenemos la posicon para guradar el token
-			int fila = filaActual;
-			int columna = colActual;
-
-			// Transición
-			palabra += caracterActual;
-
-			// Como ya añadimos el caracter obtenemos el siguiente
-			obtenerSgteCaracter();
-
-			if (Character.isDigit(caracterActual)) {
-
-				while (Character.isDigit(caracterActual)) {
-					palabra += caracterActual;
-					obtenerSgteCaracter();
-				}
-
-				// Por que si no seria un tipo real
-				if (caracterActual != '.') {
-
-					listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
-					return true;
-
-				}
-			} else {
-
-				if (caracterActual != '.') {
-
-					listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
-					return true;
-
-				} else {
-
-					posActual = fila;
-
-					filaActual = fila;
-
-					colActual = columna;
-
-				}
-
-			}
-
-		}
-
-		// RI
-		return false;
-	}
-
-	public boolean esNumeroNAtura2() {
+	/**
+	 * Metodo que reconoce los numero naturales y reales
+	 * 
+	 * @return
+	 */
+	public boolean esNumero() {
 
 		if (Character.isDigit(caracterActual)) {
 
@@ -188,20 +201,40 @@ public class AnalizadorLexico {
 			while (Character.isDigit(caracterActual)) {
 
 				palabra += caracterActual;
-
 				obtenerSgteCaracter();
 			}
-			
-			if(caracterActual!='.') {
-				
-				
+
+			if (caracterActual == '.') {
+
+				palabra += caracterActual;
+				obtenerSgteCaracter();
+
+				if (Character.isDigit(caracterActual)) {
+
+					while (Character.isDigit(caracterActual)) {
+
+						palabra += caracterActual;
+
+						obtenerSgteCaracter();
+
+					}
+
+					listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+					return true;
+
+				}
+
+			} else {
+
 				listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
 				return true;
-				
+
+				// GUARDAR EL NUMERO
+
 			}
 
 		}
-		
+
 		return false;
 	}
 
@@ -210,87 +243,175 @@ public class AnalizadorLexico {
 	 * 
 	 * @return
 	 */
-	public boolean esNumeroReal() {
-
-		if (Character.isDigit(caracterActual)) {
-
-			// inciamos palabra
-			String palabra = "";
-
-			// obtenemos la posicon para guradar el token
-			int fila = filaActual;
-			int columna = colActual;
-
-			// Transición
-			palabra += caracterActual;
-
-			// Como ya añadimos el caracter obtenemos el siguiente
-			obtenerSgteCaracter();
-
-			while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
-
-				// Transición
-				palabra += caracterActual;
-
-				// Como ya añadimos el caracter obtenemos el siguiente
-				obtenerSgteCaracter();
-
-			}
-
-			if (caracterActual == '.') {
-
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-
-				while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
-
-					palabra += caracterActual;
-
-					obtenerSgteCaracter();
-
-				}
-
-				listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
-				return true;
-
-			}
-
-		}
-
-		// Se puede iniciar directamente con punto
-		if (caracterActual == '.') {
-
-			// inciamos palabra
-			String palabra = "";
-
-			// obtenemos la posicon para guradar el token
-			int fila = filaActual;
-			int columna = colActual;
-
-			// Transición
-			palabra += caracterActual;
-
-			// Como ya añadimos el caracter obtenemos el siguiente
-			obtenerSgteCaracter();
-
-			// Si son digitos empezamos a concatenar
-			while (Character.isDigit(caracterActual)) {
-				palabra += caracterActual;
-
-				obtenerSgteCaracter();
-
-			}
-
-			listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
-			return true;
-		}
-
-		return false;
-	}
+//	public boolean esNumeroReal() {
+//
+//		if (Character.isDigit(caracterActual)) {
+//
+//			// inciamos palabra
+//			String palabra = "";
+//
+//			// obtenemos la posicon para guradar el token
+//			int fila = filaActual;
+//			int columna = colActual;
+//
+//			// Transición
+//			palabra += caracterActual;
+//
+//			// Como ya añadimos el caracter obtenemos el siguiente
+//			obtenerSgteCaracter();
+//
+//			while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
+//
+//				// Transición
+//				palabra += caracterActual;
+//
+//				// Como ya añadimos el caracter obtenemos el siguiente
+//				obtenerSgteCaracter();
+//
+//			}
+//
+//			if (caracterActual == '.') {
+//
+//				palabra += caracterActual;
+//				obtenerSgteCaracter();
+//
+//				while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
+//
+//					palabra += caracterActual;
+//
+//					obtenerSgteCaracter();
+//
+//				}
+//
+//				listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+//				return true;
+//
+//			} else {
+//
+//				vueltaAtras(fila, columna);
+//
+//				return false;
+//			}
+//
+//		}
+//
+//		// Se puede iniciar directamente con punto
+//		if (caracterActual == '.') {
+//
+//			// inciamos palabra
+//			String palabra = "";
+//
+//			// obtenemos la posicon para guradar el token
+//			int fila = filaActual;
+//			int columna = colActual;
+//
+//			// Transición
+//			palabra += caracterActual;
+//
+//			// Como ya añadimos el caracter obtenemos el siguiente
+//			obtenerSgteCaracter();
+//
+//			// Si son digitos empezamos a concatenar
+//			while (Character.isDigit(caracterActual)) {
+//				palabra += caracterActual;
+//
+//				obtenerSgteCaracter();
+//
+//			}
+//
+//			listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+//			return true;
+//		}
+//
+//		return false;
+//	}
 
 	// public boolean isNumeroReal()
 
+//
+//		if (Character.isDigit(caracterActual)) {
+//
+//			// inciamos palabra
+//			String palabra = "";
+//
+//			// obtenemos la posicon para guradar el token
+//			int fila = filaActual;
+//			int columna = colActual;
+//
+//			// Transición
+//			palabra += caracterActual;
+//
+//			// Como ya añadimos el caracter obtenemos el siguiente
+//			obtenerSgteCaracter();
+//
+//			while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
+//
+//				// Transición
+//				palabra += caracterActual;
+//
+//				// Como ya añadimos el caracter obtenemos el siguiente
+//				obtenerSgteCaracter();
+//
+//			}
+//
+//			if (caracterActual == '.') {
+//
+//				palabra += caracterActual;
+//				obtenerSgteCaracter();
+//
+//				while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
+//
+//					palabra += caracterActual;
+//
+//					obtenerSgteCaracter();
+//
+//				}
+//
+//				listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+//				return true;
+//
+//			} else {
+//
+//				vueltaAtras(fila, columna);
+//
+//				return false;
+//			}
+//
+//		}
+//
+//		// Se puede iniciar directamente con punto
+//		if (caracterActual == '.') {
+//
+//			// inciamos palabra
+//			String palabra = "";
+//
+//			// obtenemos la posicon para guradar el token
+//			int fila = filaActual;
+//			int columna = colActual;
+//
+//			// Transición
+//			palabra += caracterActual;
+//
+//			// Como ya añadimos el caracter obtenemos el siguiente
+//			obtenerSgteCaracter();
+//
+//			// Si son digitos empezamos a concatenar
+//			while (Character.isDigit(caracterActual)) {
+//				palabra += caracterActual;
+//
+//				obtenerSgteCaracter();
+//
+//			}
+//
+//			listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+//			return true;
+//		}
+//
+//		return false;
+//	
 	/**
+	 * 
+	 * METODO QUE DETECTA QUE ES IDENTIFICADOR
 	 * 
 	 * @return
 	 */
@@ -305,7 +426,7 @@ public class AnalizadorLexico {
 
 			obtenerSgteCaracter();
 
-			while (Character.isLetter(caracterActual) || Character.isDigit(caracterActual) && caracterActual != '$') {
+			while (Character.isLetter(caracterActual) || Character.isDigit(caracterActual) && caracterActual == '_') {
 
 				palabra += caracterActual;
 				obtenerSgteCaracter();
@@ -655,15 +776,24 @@ public class AnalizadorLexico {
 	 */
 	public boolean esCaracterHexadecimal() {
 
+		
+	
 		return caracterActual == '0' || caracterActual == '1' || caracterActual == '2' || caracterActual == 'A'
 				|| caracterActual == 'B';
 
+		
+		
+		
+		
+		
+		
 	}
 
 	/**
+	 * SOLUCIONAR
 	 * Detecta si el caracter es hexadecimal
 	 */
-	public boolean isHexadecimal() {
+	public boolean esHexadecimal() {
 
 		if (caracterActual == '#') {
 
@@ -684,6 +814,7 @@ public class AnalizadorLexico {
 					palabra += caracterActual;
 					obtenerSgteCaracter();
 				}
+				
 				listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
 
 				return true;
@@ -752,5 +883,23 @@ public class AnalizadorLexico {
 	/**
 	 * REALIZAR EL METODO DE LOS COMENTARIOS
 	 */
+
+	/**
+	 * Metodo para volver atras
+	 * 
+	 * @param fila
+	 * @param columna
+	 * @param posicion
+	 */
+	public void vueltaAtras(int fila, int columna) {
+
+		filaActual = fila;
+
+		posActual = columna;
+
+		System.out.println(
+				"FILA ACTUAL: " + filaActual + "  POS ACTUAL: " + posActual + "  COLUMNA ACTUAL: " + colActual);
+
+	}
 
 }
