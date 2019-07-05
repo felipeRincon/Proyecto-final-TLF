@@ -7,8 +7,8 @@ public class App {
 
 	public static void main(String arg[]) {
 
-		//Validar en la interfaz que el codigo fuente no sea vacio
-		String codigoFuente = "2.223 2323s 44.34  #234F";
+		// Validar en la interfaz que el codigo fuente no sea vacio
+		String codigoFuente = "2.223 2323s  _HSHEB_ 44.34 $fdfdf$ int  inteher #234F";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();

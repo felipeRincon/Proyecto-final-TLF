@@ -37,13 +37,9 @@ public class AnalizadorLexico {
 
 		this.palabrasReservadas = new ArrayList<String>();
 
-		palabrasReservadas.add("dInt");
-		palabrasReservadas.add("dInt");
-		palabrasReservadas.add("dInt");
-		palabrasReservadas.add("dInt");
-		palabrasReservadas.add("dInt");
-		palabrasReservadas.add("dInt");
-		palabrasReservadas.add("dInt");
+		palabrasReservadas.add("int");
+		palabrasReservadas.add("integer");
+		palabrasReservadas.add("string");
 
 	}
 
@@ -94,22 +90,25 @@ public class AnalizadorLexico {
 				continue;
 			}
 
+//			//Es palabra reservad
+//			if(esPalabraReservada())
+//				continue;
+
 			// Numeros naturales y reales listo
 			if (esNumero())
 				continue;
 
-
-			if(esHexadecimal())
-				continue;
-			
+			// Metodo listo
 			if (esIdentificador())
 				continue;
 
-			
-			if(esHexadecimal())
+			// Metodo en prueba
+			if (esHexadecimal())
 				continue;
 			
-			
+			 if(esComentario())
+				 continue;
+
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
 		}
@@ -432,12 +431,80 @@ public class AnalizadorLexico {
 				obtenerSgteCaracter();
 			}
 
-			listaTokens.add(new Token(Categoria.IDENTIFICADOR, palabra, fila, columna));
-			return true;
+			if (!correspondeReservada(palabra)) {
+				listaTokens.add(new Token(Categoria.IDENTIFICADOR, palabra, fila, columna));
+				return true;
+
+			} else {
+
+				listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
+				return true;
+
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 
+	 */
+	public boolean esPalabraReservada() {
+
+		if (Character.isLetter(caracterActual)) {
+
+			int fila = filaActual;
+
+			int columna = colActual;
+
+			String palabra = "";
+
+			while (Character.isLetter(caracterActual) && posActual < codigoFuente.length()) {
+
+				palabra += caracterActual;
+
+				if (correspondeReservada(palabra)) {
+
+					// GUARDAMOS EL TOKENS
+
+					obtenerSgteCaracter();
+					if (caracterActual == ' ') {
+
+						listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
+
+						return true;
+
+					}
+				}
+
+				obtenerSgteCaracter();
+			}
 
 		}
 
 		return false;
+
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean correspondeReservada(String palabra) {
+
+		boolean centinela = false;
+
+		for (int i = 0; i < palabrasReservadas.size() && !centinela; i++) {
+
+			if (palabra.equals(palabrasReservadas.get(i))) {
+
+				centinela = true;
+
+			}
+		}
+
+		return centinela;
+
 	}
 
 	/**
@@ -776,23 +843,17 @@ public class AnalizadorLexico {
 	 */
 	public boolean esCaracterHexadecimal() {
 
-		
-	
-		return caracterActual == '0' || caracterActual == '1' || caracterActual == '2' || caracterActual == 'A'
-				|| caracterActual == 'B';
+		return caracterActual == '0' || caracterActual == '1' || caracterActual == '2' || caracterActual == '3'
+				|| caracterActual == '4' || caracterActual == '5' || caracterActual == '6' || caracterActual == '7'
+				|| caracterActual == '8' || caracterActual == '9' || caracterActual == 'A' || caracterActual == 'B'
+				|| caracterActual == 'C' || caracterActual == 'D' || caracterActual == 'F'
 
-		
-		
-		
-		
-		
-		
+		;
+
 	}
 
 	/**
-	 * SOLUCIONAR
-	 * Detecta si el caracter es hexadecimal
-	 * 
+	 * METODO QUE RECONOCE LOS TOKENS correspondientes a decimal
 	 * 
 	 */
 	public boolean esHexadecimal() {
@@ -816,7 +877,7 @@ public class AnalizadorLexico {
 					palabra += caracterActual;
 					obtenerSgteCaracter();
 				}
-				
+
 				listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
 
 				return true;
@@ -883,8 +944,48 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * REALIZAR EL METODO DE LOS COMENTARIOS
+	 * Metodo que detecta los comentarios
+	 * 
+	 * @return
 	 */
+	public boolean esComentario() {
+
+		if (caracterActual == '_') {
+
+			int fila = filaActual;
+
+			String palabra = "";
+
+			int columna = colActual;
+
+			
+			palabra += caracterActual;
+			
+			obtenerSgteCaracter();
+
+			
+
+			while (Character.isLetter(caracterActual) || Character.isDigit(caracterActual)) {
+
+				palabra += caracterActual;
+
+				obtenerSgteCaracter();
+
+			}
+
+			palabra+=caracterActual;
+			if (caracterActual == '_') {
+
+				listaTokens.add(new Token(Categoria.COMENTARIO, palabra, fila, columna));
+
+				return true;
+
+			}
+
+		}
+
+		return false;
+	}
 
 	/**
 	 * Metodo para volver atras
