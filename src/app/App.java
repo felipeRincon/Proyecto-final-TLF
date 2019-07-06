@@ -7,6 +7,10 @@ public class App {
 
 	public static void main(String arg[]) {
 
+		
+		/**
+		 * APARENTEMENTE ESTA LISTA
+		 */
 		// Validar en la interfaz que el codigo fuente no sea vacio
 		String codigoFuente = "#_++121.23 2323>=--#";
 
