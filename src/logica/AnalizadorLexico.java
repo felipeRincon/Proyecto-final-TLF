@@ -119,20 +119,14 @@ public class AnalizadorLexico {
 			// Metodo por probar
 			if (esOperadorLogico())
 				continue;
-//
-//
 
-//
 			// metodo probado
 			if (esComentario())
 				continue;
 
 			// Metodo que reconoce las palabras y tambien las reservadas listo
-//			if (_esIdentificador_esPalabraReservada())
-//				continue;
-//
-
-//
+			if (_esIdentificador_esPalabraReservada())
+				continue;
 
 			if (esHexadecimal())
 				continue;
@@ -147,8 +141,8 @@ public class AnalizadorLexico {
 			// Metodo probado
 			if (esCadenaCaracteres())
 				continue;
-			
-			if(esTerminal())
+
+			if (esTerminal())
 				continue;
 
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
