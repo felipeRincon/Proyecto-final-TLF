@@ -97,18 +97,17 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-		
-			
+			// metodo probado
+			if (esComentario())
+				continue;
+
 			if (esOperadorDeIncremento_esOperadorDeDecremento())
 				continue;
 
-		
-			
-			//arreglar 
+			// arreglar
 			if (esNumeroReal())
 				continue;
 
-			
 			// Numeros naturales y reales listo
 			if (esNatural())
 				continue;
@@ -129,18 +128,14 @@ public class AnalizadorLexico {
 			if (esOperadorLogico())
 				continue;
 
-			// metodo probado
-			if (esComentario())
-				continue;
-
 			// RESOLVER ESTE ERROR
 			if (esPalabraReservada())
 				continue;
 
-			if (esIdentificador())
+			if (esHexadecimal())
 				continue;
 
-			if (esHexadecimal())
+			if (esIdentificador())
 				continue;
 
 			if (esLlave_esCorchete())
@@ -152,6 +147,9 @@ public class AnalizadorLexico {
 
 			// Metodo probado
 			if (esCadenaCaracteres())
+				continue;
+
+			if (esSeparador())
 				continue;
 
 			if (esTerminal())
@@ -189,7 +187,7 @@ public class AnalizadorLexico {
 			}
 
 			listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
-			
+
 			return true;
 
 		}
@@ -237,8 +235,8 @@ public class AnalizadorLexico {
 				listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
 				return true;
 
-			}else {
-				
+			} else {
+
 				vueltaAtras(fila, columna);
 				return false;
 			}
@@ -1049,22 +1047,27 @@ public class AnalizadorLexico {
 		if (caracterActual == '#') {
 
 			int fila = filaActual;
-			int columna = colActual;
 
+			int columna = colActual;
 			String palabra = "";
 
-			// Transición
 			palabra += caracterActual;
-
 			obtenerSgteCaracter();
 
-			if (esCaracterHexadecimal()) {
+			while (Character.isDigit(caracterActual) || (caracterActual >= 65 && caracterActual <= 70)) {
 
-				while (esCaracterHexadecimal()) {
+				palabra += caracterActual;
+				obtenerSgteCaracter();
 
-					palabra += caracterActual;
-					obtenerSgteCaracter();
-				}
+			}
+
+			if (palabra.charAt(palabra.length() - 1) == '#') {
+
+				vueltaAtras(fila, columna);
+
+				return false;
+
+			} else {
 
 				listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
 				return true;
@@ -1150,7 +1153,7 @@ public class AnalizadorLexico {
 
 			obtenerSgteCaracter();
 
-			while (Character.isLetter(caracterActual) || Character.isDigit(caracterActual)) {
+			while (caracterActual != '_' && posActual < codigoFuente.length()) {
 
 				palabra += caracterActual;
 
@@ -1165,6 +1168,10 @@ public class AnalizadorLexico {
 				obtenerSgteCaracter();
 				return true;
 
+			}else {
+				
+				vueltaAtras(fila, columna);
+				return false;
 			}
 
 		}
