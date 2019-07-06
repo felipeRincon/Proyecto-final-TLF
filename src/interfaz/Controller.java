@@ -8,7 +8,7 @@ import javafx.scene.control.TextArea;
 import logica.AnalizadorLexico;
 import logica.Token;
 
-public class Controller {
+public class Controller  {
 
 	
 
@@ -60,7 +60,7 @@ public class Controller {
 	@FXML
 	private MenuItem menuComentarios;
 
-	//
+	
 	@FXML
 	void onButtonAnalizar(ActionEvent event) {
 
