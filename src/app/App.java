@@ -9,10 +9,9 @@ public class App {
 
 		
 		// Validar en la interfaz que el codigo fuente no sea vacio
-		String codigoFuente = "+d+m+++>=>>¿¿?@&====22.33g44([})#F223{$5LVV$";
+		String codigoFuente = "#FF2B; #FFBA123([] {)>++=<=}";
 
 		
-		String codigoFuente2="+++++";
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
 

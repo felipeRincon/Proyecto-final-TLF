@@ -123,11 +123,11 @@ public class AnalizadorLexico {
 //
 
 //
-//			// metodo probado
-//			if (esComentario())
-//				continue;
-//
-//			// Metodo que reconoce las palabras y tambien las reservadas listo
+			// metodo probado
+			if (esComentario())
+				continue;
+
+			// Metodo que reconoce las palabras y tambien las reservadas listo
 //			if (_esIdentificador_esPalabraReservada())
 //				continue;
 //
@@ -146,6 +146,9 @@ public class AnalizadorLexico {
 
 			// Metodo probado
 			if (esCadenaCaracteres())
+				continue;
+			
+			if(esTerminal())
 				continue;
 
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
