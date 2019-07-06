@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import sun.security.x509.CertificateIssuerName;
 
@@ -103,10 +104,10 @@ public class AnalizadorLexico {
 			if (esOperadorDeIncremento_esOperadorDeDecremento())
 				continue;
 
-//			// Numeros naturales y reales listo
-//			if (esNatural_esReal())
-//				continue;
-//
+			// Numeros naturales y reales listo
+			if (esNatural_esReal())
+				continue;
+
 			// Metodo
 			if (esOperadorDeAsignacion())
 				continue;
@@ -130,22 +131,22 @@ public class AnalizadorLexico {
 //			if (_esIdentificador_esPalabraReservada())
 //				continue;
 //
-//			// Metodo en prueba
-//			if (esHexadecimal())
-//				continue;
-//
 
 //
-//			if (esLlave_esCorchete())
-//				continue;
-//
-//			// Metodo por probar
-//			if (esParentesis())
-//				continue;
-//
-//			// Metodo probado
-//			if (esCadenaCaracteres())
-//				continue;
+
+			if (esHexadecimal())
+				continue;
+
+			if (esLlave_esCorchete())
+				continue;
+
+			// Metodo por probar
+			if (esParentesis())
+				continue;
+
+			// Metodo probado
+			if (esCadenaCaracteres())
+				continue;
 
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
@@ -339,7 +340,7 @@ public class AnalizadorLexico {
 			obtenerSgteCaracter();
 
 			if (caracterActual == '+' || caracterActual == '=') {
-				
+
 				vueltaAtras(fila, columna);
 
 				return false;
@@ -670,7 +671,6 @@ public class AnalizadorLexico {
 	 */
 	public boolean esOperadorDeIncremento_esOperadorDeDecremento() {
 
-		
 		if (caracterActual == '+') {
 
 			int fila = filaActual;
@@ -678,24 +678,24 @@ public class AnalizadorLexico {
 
 			String palabra = "";
 
-			palabra+=caracterActual;
+			palabra += caracterActual;
 			obtenerSgteCaracter();
 
 			if (caracterActual == '+') {
 
-				palabra+=caracterActual;
-				
+				palabra += caracterActual;
+
 				listaTokens.add(new Token(Categoria.OPERADOR_DE_INCREMENTO, palabra, fila, columna));
 				obtenerSgteCaracter();
 				return true;
-				
+
 			} else {
 
 				vueltaAtras(fila, columna);
 				return false;
 			}
 		}
-		
+
 		if (caracterActual == '-') {
 
 			int fila = filaActual;
@@ -703,25 +703,22 @@ public class AnalizadorLexico {
 
 			String palabra = "";
 
-			palabra+=caracterActual;
+			palabra += caracterActual;
 			obtenerSgteCaracter();
 
 			if (caracterActual == '-') {
 
-				palabra+=caracterActual;
+				palabra += caracterActual;
 				obtenerSgteCaracter();
 				listaTokens.add(new Token(Categoria.OPERADOR_DECREMENTO, palabra, fila, columna));
 				return true;
-				
+
 			} else {
 
 				vueltaAtras(fila, columna);
 				return false;
 			}
 		}
-		
-		
-		
 
 		return false;
 
@@ -734,7 +731,7 @@ public class AnalizadorLexico {
 	 */
 	public boolean esParentesis() {
 
-		if (caracterActual == '(' || caracterActual == ')') {
+		if (caracterActual == '(') {
 
 			int fila = filaActual;
 			int columna = colActual;
@@ -744,7 +741,24 @@ public class AnalizadorLexico {
 			// Transición
 			palabra += caracterActual;
 
-			listaTokens.add(new Token(Categoria.PARENTESIS, palabra, fila, columna));
+			listaTokens.add(new Token(Categoria.PARENTESIS_APERTURA, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+
+			return true;
+		}
+
+		if (caracterActual == ')') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			listaTokens.add(new Token(Categoria.PARENTESIS_CIERRE, palabra, fila, columna));
 
 			obtenerSgteCaracter();
 
@@ -917,8 +931,6 @@ public class AnalizadorLexico {
 				}
 
 				listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
-				obtenerSgteCaracter();
-				System.out.println();
 				return true;
 			}
 
