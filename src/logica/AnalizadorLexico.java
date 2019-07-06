@@ -54,21 +54,25 @@ public class AnalizadorLexico {
 
 		posActual++;
 
-		// Verificamos que no se desborde
 		if (posActual < codigoFuente.length()) {
 
 			if (caracterActual != '\n') {
-				filaActual++;
-				colActual = 0;
-			} else {
 
 				colActual++;
+
+				filaActual = 0;
+
+			} else {
+
+				filaActual++;
 			}
 
 			caracterActual = codigoFuente.charAt(posActual);
 
 		} else {
+
 			caracterActual = finCodigo;
+
 		}
 
 	}
@@ -92,31 +96,56 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-//			//Es palabra reservad
-//			if(esPalabraReservada())
+			// Metodo por probar
+			if (esOperadorAritmetico())
+				continue;
+
+			if (esOperadorDeIncremento_esOperadorDeDecremento())
+				continue;
+
+//			// Numeros naturales y reales listo
+//			if (esNatural_esReal())
 //				continue;
-
-			// Numeros naturales y reales listo
-			if (esNumero())
-				continue;
-
-			// Metodo listo
-			if (esIdentificador())
-				continue;
-
-			// Metodo en prueba
-			if (esHexadecimal())
-				continue;
-
-			// metodo probado
-			if (esComentario())
-				continue;
-
+//
+			// Metodo
 			if (esOperadorDeAsignacion())
 				continue;
 
-			if (esOperadorAritmetico())
+			// Metodo por probar
+			if (esOperadorRelacional())
 				continue;
+
+			// Metodo por probar
+			if (esOperadorLogico())
+				continue;
+//
+//
+
+//
+//			// metodo probado
+//			if (esComentario())
+//				continue;
+//
+//			// Metodo que reconoce las palabras y tambien las reservadas listo
+//			if (_esIdentificador_esPalabraReservada())
+//				continue;
+//
+//			// Metodo en prueba
+//			if (esHexadecimal())
+//				continue;
+//
+
+//
+//			if (esLlave_esCorchete())
+//				continue;
+//
+//			// Metodo por probar
+//			if (esParentesis())
+//				continue;
+//
+//			// Metodo probado
+//			if (esCadenaCaracteres())
+//				continue;
 
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
@@ -125,74 +154,11 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Detecta los caracteres o cadenas de caracteres que correspondientes a los
-	 * enteros SE PROBO ESTA LISTO
-	 * 
-	 * @return true si el token se agrego con exito
-	 */
-//	public boolean esNumeroNatural() {
-//
-//		// Si el caracter corresponde a un digito
-//		if (Character.isDigit(caracterActual)) {
-//
-//			// inciamos palabra
-//			String palabra = "";
-//
-//			// obtenemos la posicon para guradar el token
-//			int fila = filaActual;
-//			int columna = colActual;
-//
-//			// Transición
-//			palabra += caracterActual;
-//
-//			// Como ya añadimos el caracter obtenemos el siguiente
-//			obtenerSgteCaracter();
-//
-//			if (Character.isDigit(caracterActual)) {
-//
-//				while (Character.isDigit(caracterActual)) {
-//					palabra += caracterActual;
-//					obtenerSgteCaracter();
-//				}
-//
-//				// Por que si no seria un tipo real
-//				if (caracterActual != '.') {
-//
-//					listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
-//					return true;
-//
-//				}
-//			} else {
-//
-//				if (caracterActual != '.') {
-//
-//					listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
-//					return true;
-//
-//				} else {
-//
-//					posActual = fila;
-//
-//					filaActual = fila;
-//
-//					colActual = columna;
-//
-//				}
-//
-//			}
-//
-//		}
-//
-//		// RI
-//		return false;
-//	}
-
-	/**
 	 * Metodo que reconoce los numero naturales y reales
 	 * 
 	 * @return
 	 */
-	public boolean esNumero() {
+	public boolean esNatural_esReal() {
 
 		if (Character.isDigit(caracterActual)) {
 
@@ -228,6 +194,7 @@ public class AnalizadorLexico {
 					}
 
 					listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+					obtenerSgteCaracter();
 					return true;
 
 				}
@@ -235,6 +202,7 @@ public class AnalizadorLexico {
 			} else {
 
 				listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
+				obtenerSgteCaracter();
 				return true;
 
 				// GUARDAR EL NUMERO
@@ -251,179 +219,14 @@ public class AnalizadorLexico {
 	 * 
 	 * @return
 	 */
-//	public boolean esNumeroReal() {
-//
-//		if (Character.isDigit(caracterActual)) {
-//
-//			// inciamos palabra
-//			String palabra = "";
-//
-//			// obtenemos la posicon para guradar el token
-//			int fila = filaActual;
-//			int columna = colActual;
-//
-//			// Transición
-//			palabra += caracterActual;
-//
-//			// Como ya añadimos el caracter obtenemos el siguiente
-//			obtenerSgteCaracter();
-//
-//			while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
-//
-//				// Transición
-//				palabra += caracterActual;
-//
-//				// Como ya añadimos el caracter obtenemos el siguiente
-//				obtenerSgteCaracter();
-//
-//			}
-//
-//			if (caracterActual == '.') {
-//
-//				palabra += caracterActual;
-//				obtenerSgteCaracter();
-//
-//				while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
-//
-//					palabra += caracterActual;
-//
-//					obtenerSgteCaracter();
-//
-//				}
-//
-//				listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
-//				return true;
-//
-//			} else {
-//
-//				vueltaAtras(fila, columna);
-//
-//				return false;
-//			}
-//
-//		}
-//
-//		// Se puede iniciar directamente con punto
-//		if (caracterActual == '.') {
-//
-//			// inciamos palabra
-//			String palabra = "";
-//
-//			// obtenemos la posicon para guradar el token
-//			int fila = filaActual;
-//			int columna = colActual;
-//
-//			// Transición
-//			palabra += caracterActual;
-//
-//			// Como ya añadimos el caracter obtenemos el siguiente
-//			obtenerSgteCaracter();
-//
-//			// Si son digitos empezamos a concatenar
-//			while (Character.isDigit(caracterActual)) {
-//				palabra += caracterActual;
-//
-//				obtenerSgteCaracter();
-//
-//			}
-//
-//			listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
-//			return true;
-//		}
-//
-//		return false;
-//	}
 
-	// public boolean isNumeroReal()
-
-//
-//		if (Character.isDigit(caracterActual)) {
-//
-//			// inciamos palabra
-//			String palabra = "";
-//
-//			// obtenemos la posicon para guradar el token
-//			int fila = filaActual;
-//			int columna = colActual;
-//
-//			// Transición
-//			palabra += caracterActual;
-//
-//			// Como ya añadimos el caracter obtenemos el siguiente
-//			obtenerSgteCaracter();
-//
-//			while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
-//
-//				// Transición
-//				palabra += caracterActual;
-//
-//				// Como ya añadimos el caracter obtenemos el siguiente
-//				obtenerSgteCaracter();
-//
-//			}
-//
-//			if (caracterActual == '.') {
-//
-//				palabra += caracterActual;
-//				obtenerSgteCaracter();
-//
-//				while (Character.isDigit(caracterActual) && posActual < codigoFuente.length()) {
-//
-//					palabra += caracterActual;
-//
-//					obtenerSgteCaracter();
-//
-//				}
-//
-//				listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
-//				return true;
-//
-//			} else {
-//
-//				vueltaAtras(fila, columna);
-//
-//				return false;
-//			}
-//
-//		}
-//
-//		// Se puede iniciar directamente con punto
-//		if (caracterActual == '.') {
-//
-//			// inciamos palabra
-//			String palabra = "";
-//
-//			// obtenemos la posicon para guradar el token
-//			int fila = filaActual;
-//			int columna = colActual;
-//
-//			// Transición
-//			palabra += caracterActual;
-//
-//			// Como ya añadimos el caracter obtenemos el siguiente
-//			obtenerSgteCaracter();
-//
-//			// Si son digitos empezamos a concatenar
-//			while (Character.isDigit(caracterActual)) {
-//				palabra += caracterActual;
-//
-//				obtenerSgteCaracter();
-//
-//			}
-//
-//			listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
-//			return true;
-//		}
-//
-//		return false;
-//	
 	/**
 	 * 
 	 * METODO QUE DETECTA QUE ES IDENTIFICADOR
 	 * 
 	 * @return
 	 */
-	public boolean esIdentificador() {
+	public boolean _esIdentificador_esPalabraReservada() {
 
 		if (Character.isLetter(caracterActual)) {
 			String palabra = "";
@@ -442,11 +245,13 @@ public class AnalizadorLexico {
 
 			if (!correspondeReservada(palabra)) {
 				listaTokens.add(new Token(Categoria.IDENTIFICADOR, palabra, fila, columna));
+				obtenerSgteCaracter();
 				return true;
 
 			} else {
 
 				listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
+				obtenerSgteCaracter();
 				return true;
 
 			}
@@ -480,13 +285,12 @@ public class AnalizadorLexico {
 					if (caracterActual == ' ') {
 
 						listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
-
+						obtenerSgteCaracter();
 						return true;
 
 					}
 				}
 
-				obtenerSgteCaracter();
 			}
 
 		}
@@ -523,19 +327,86 @@ public class AnalizadorLexico {
 	 */
 	public boolean esOperadorAritmetico() {
 
-		if (caracterActual == '*' || caracterActual == '/' || caracterActual == '%' || caracterActual == '+'
-				|| caracterActual == '-') {
+		if (caracterActual == '+') {
 
 			int fila = filaActual;
 			int columna = colActual;
 
 			String palabra = "";
 
-			// Transición
 			palabra += caracterActual;
-			listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+
 			obtenerSgteCaracter();
-			return true;
+
+			if (caracterActual == '+' || caracterActual == '=') {
+				
+				vueltaAtras(fila, columna);
+
+				return false;
+			} else {
+
+				listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+				// no se obtiene el siguiente caracter por que este hay que revisarlo con otro
+				// automata
+				return true;
+			}
+
+		}
+
+		if (caracterActual == '-') {
+
+			int fila = filaActual;
+
+			int columna = colActual;
+
+			String palabra = "";
+
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+
+			if (caracterActual == '-' || caracterActual == '=') {
+
+				vueltaAtras(fila, columna);
+
+				esOperadorDeIncremento_esOperadorDeDecremento();
+				return false;
+			} else {
+
+				listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+
+				// no se obtiene el siguiente caracter por que este hay que revisarlo con otro
+				// automata
+				return true;
+
+			}
+
+		}
+
+		if (caracterActual == '*' || caracterActual == '/' || caracterActual == '%') {
+
+			int fila = filaActual;
+
+			int columna = colActual;
+
+			String palabra = "";
+
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+
+			if (caracterActual == '=') {
+
+				vueltaAtras(fila, columna);
+				return false;
+			} else {
+
+				listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+
+				// no se obtiene el siguiente caracter por que este hay que revisarlo con otro
+				// automata
+				return true;
+			}
 
 		}
 
@@ -561,6 +432,49 @@ public class AnalizadorLexico {
 	 * @return
 	 */
 	public boolean esOperadorRelacional() {
+
+		if (caracterActual == '?') {
+
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+			listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
+			return true;
+
+		}
+
+		// Si es operador que obligtoriamente debe de tener dos operadores juntos
+		if (caracterActual == '=') {
+
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+
+			if (caracterActual == '=') {
+
+				palabra += caracterActual;
+
+				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
+				obtenerSgteCaracter();
+
+				return true;
+
+			} else {
+
+				vueltaAtras(fila, columna);
+
+				return false;
+			}
+
+		}
 
 		// OPeradores que por si solos ya son un operador relacional
 		if (caracterActual == '>' || caracterActual == '<') {
@@ -588,37 +502,13 @@ public class AnalizadorLexico {
 				return true;
 
 			} else {
-				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
-			}
-
-			if (!esRelacional(caracterActual)) {
-
-				return true;
-
-			}
-
-		}
-
-		// Si es operador que obligtoriamente debe de tener dos operadores juntos
-		if (caracterActual == '!' || caracterActual == '=') {
-
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
-
-			palabra += caracterActual;
-
-			obtenerSgteCaracter();
-
-			if (caracterActual == '=') {
-
-				palabra += caracterActual;
 
 				listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
-				obtenerSgteCaracter();
 
+				// aca es cualquier otra cosa por lo tanto guardamos el > o el <
+				// no se optiene el siguiente caracter ni se concatena por que lo debe revisar
+				// otro automata
 				return true;
-
 			}
 
 		}
@@ -633,7 +523,7 @@ public class AnalizadorLexico {
 	 */
 	public boolean esOperadorLogico() {
 
-		if (caracterActual == '&' || caracterActual == '@' || caracterActual == '?') {
+		if (caracterActual == '&' || caracterActual == '@' || caracterActual == '¿') {
 
 			int fila = filaActual;
 			int columna = colActual;
@@ -659,9 +549,94 @@ public class AnalizadorLexico {
 	 */
 	public boolean esOperadorDeAsignacion() {
 
-		// Si es uno de aumento y asignacion simultanea
-		if (caracterActual == '+' || caracterActual == '-' || caracterActual == '*' || caracterActual == '/'
-				|| caracterActual == '%') {
+		if (caracterActual == '=') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+
+			if (caracterActual == '=') {
+
+				vueltaAtras(fila, columna);
+
+				return false;
+
+			} else {
+
+				listaTokens.add(new Token(Categoria.OPERADORES_DE_ASIGNACION, palabra, fila, columna));
+				// NO SE CONCATENA POR QUE ESTE DEBE SER REVISADO POR OTRO AUTOMATA
+				return true;
+			}
+
+		}
+
+		if (caracterActual == '+') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+
+			if (caracterActual == '+') {
+				vueltaAtras(fila, columna);
+
+				return false;
+			}
+
+			if (caracterActual == '=') {
+
+				palabra += caracterActual;
+				listaTokens.add(new Token(Categoria.OPERADORES_DE_ASIGNACION, palabra, fila, columna));
+
+				obtenerSgteCaracter();
+				return true;
+
+			}
+
+		}
+
+		if (caracterActual == '-') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			// Transición
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+
+			if (caracterActual == '-') {
+				vueltaAtras(fila, columna);
+
+				return false;
+			}
+
+			if (caracterActual == '=') {
+
+				palabra += caracterActual;
+				listaTokens.add(new Token(Categoria.OPERADORES_DE_ASIGNACION, palabra, fila, columna));
+
+				obtenerSgteCaracter();
+				return true;
+
+			}
+
+		}
+		// SI no necesita bactraking
+		if (caracterActual == '*' || caracterActual == '/' || caracterActual == '%') {
 
 			int fila = filaActual;
 			int columna = colActual;
@@ -677,29 +652,13 @@ public class AnalizadorLexico {
 				// Transición
 				palabra += caracterActual;
 				listaTokens.add(new Token(Categoria.OPERADORES_DE_ASIGNACION, palabra, fila, columna));
-                
+
 				obtenerSgteCaracter();
 				return true;
 			}
 
 		}
 
-		// Si es uno de asignacion normal
-		if (caracterActual == '=') {
-
-			int fila = filaActual;
-			int columna = colActual;
-
-			String palabra = "";
-
-			// Transición
-			palabra += caracterActual;
-			listaTokens.add(new Token(Categoria.OPERADORES_DE_ASIGNACION, palabra, fila, columna));
-
-			obtenerSgteCaracter();
-			return true;
-
-		}
 		return false;
 
 	}
@@ -709,31 +668,60 @@ public class AnalizadorLexico {
 	 * 
 	 * @return
 	 */
-	public boolean esOperadorDeIncremento() {
+	public boolean esOperadorDeIncremento_esOperadorDeDecremento() {
 
-		if (caracterActual == '+' || caracterActual == '-') {
-
-			char caraterAnterior = caracterActual;
+		
+		if (caracterActual == '+') {
 
 			int fila = filaActual;
 			int columna = colActual;
 
 			String palabra = "";
 
-			// Transición
-			palabra += caracterActual;
-
+			palabra+=caracterActual;
 			obtenerSgteCaracter();
-			if (caracterActual == caraterAnterior) {
 
-				palabra += caracterActual;
+			if (caracterActual == '+') {
+
+				palabra+=caracterActual;
+				
 				listaTokens.add(new Token(Categoria.OPERADOR_DE_INCREMENTO, palabra, fila, columna));
 				obtenerSgteCaracter();
 				return true;
+				
+			} else {
 
+				vueltaAtras(fila, columna);
+				return false;
 			}
-
 		}
+		
+		if (caracterActual == '-') {
+
+			int fila = filaActual;
+			int columna = colActual;
+
+			String palabra = "";
+
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+
+			if (caracterActual == '-') {
+
+				palabra+=caracterActual;
+				obtenerSgteCaracter();
+				listaTokens.add(new Token(Categoria.OPERADOR_DECREMENTO, palabra, fila, columna));
+				return true;
+				
+			} else {
+
+				vueltaAtras(fila, columna);
+				return false;
+			}
+		}
+		
+		
+		
 
 		return false;
 
@@ -744,7 +732,7 @@ public class AnalizadorLexico {
 	 * 
 	 * @return
 	 */
-	public boolean isParentesis() {
+	public boolean esParentesis() {
 
 		if (caracterActual == '(' || caracterActual == ')') {
 
@@ -771,25 +759,64 @@ public class AnalizadorLexico {
 	 * 
 	 * @return
 	 */
-	public boolean esLlave() {
+	public boolean esLlave_esCorchete() {
 
-		if (caracterActual == '{' || caracterActual == '}' || caracterActual == '[' || caracterActual == ']') {
+		if (caracterActual == '{') {
 
 			int fila = filaActual;
 			int columna = colActual;
-
 			String palabra = "";
-
 			// Transición
 			palabra += caracterActual;
-
-			listaTokens.add(new Token(Categoria.LLAVES, palabra, fila, columna));
+			listaTokens.add(new Token(Categoria.CORCHETES_APERTURA, palabra, fila, columna));
 
 			obtenerSgteCaracter();
 
 			return true;
 		}
 
+		if (caracterActual == '}') {
+			int fila = filaActual;
+			int columna = colActual;
+			String palabra = "";
+			// Transición
+			palabra += caracterActual;
+			listaTokens.add(new Token(Categoria.CORCHETES_CIERRE, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+
+			return true;
+		}
+
+		if (caracterActual == '[') {
+
+			int fila = filaActual;
+			int columna = colActual;
+			String palabra = "";
+			// Transición
+			palabra += caracterActual;
+			listaTokens.add(new Token(Categoria.LLAVES_APERTURA, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+
+			return true;
+
+		}
+
+		if (caracterActual == ']') {
+
+			int fila = filaActual;
+			int columna = colActual;
+			String palabra = "";
+			// Transición
+			palabra += caracterActual;
+			listaTokens.add(new Token(Categoria.LLAVES_CIERRE, palabra, fila, columna));
+
+			obtenerSgteCaracter();
+
+			return true;
+
+		}
 		return false;
 	}
 
@@ -891,6 +918,7 @@ public class AnalizadorLexico {
 
 				listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
 				obtenerSgteCaracter();
+				System.out.println();
 				return true;
 			}
 
@@ -905,7 +933,7 @@ public class AnalizadorLexico {
 	 * 
 	 * @return
 	 */
-	public boolean isCadenaDeCaracteres() {
+	public boolean esCadenaCaracteres() {
 
 		if (caracterActual == '$') {
 			{
@@ -943,7 +971,7 @@ public class AnalizadorLexico {
 
 						listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
 						obtenerSgteCaracter();
-						
+
 						return true;
 					}
 
@@ -1009,8 +1037,7 @@ public class AnalizadorLexico {
 
 		posActual = columna;
 
-		System.out.println(
-				"FILA ACTUAL: " + filaActual + "  POS ACTUAL: " + posActual + "  COLUMNA ACTUAL: " + colActual);
+		colActual = columna;
 
 	}
 

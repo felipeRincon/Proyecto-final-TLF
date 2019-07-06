@@ -8,11 +8,12 @@ public class App {
 	public static void main(String arg[]) {
 
 		
-		
 		// Validar en la interfaz que el codigo fuente no sea vacio
-		String codigoFuente = "+=  ";
+		String codigoFuente = "+d+m+++>=>>¿¿?@&===";
 
-		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
+		
+		String codigoFuente2="==?&_=+++=";
+		AnalizadorLexico al = new AnalizadorLexico(codigoFuente2);
 		al.analizar();
 
 		for (Token a : al.getListaTokens()) {
