@@ -97,18 +97,27 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			// Metodo por probar
-			if (esOperadorAritmetico())
-				continue;
-
+		
+			
 			if (esOperadorDeIncremento_esOperadorDeDecremento())
 				continue;
 
-			// Numeros naturales y reales listo
-			if (esNatural_esReal())
+		
+			
+			//arreglar 
+			if (esNumeroReal())
 				continue;
 
+			
+			// Numeros naturales y reales listo
+			if (esNatural())
+				continue;
+
+			// Metodo por probar
+			if (esOperadorAritmetico())
+				continue;
 			// Metodo
+
 			if (esOperadorDeAsignacion())
 				continue;
 
@@ -119,20 +128,17 @@ public class AnalizadorLexico {
 			// Metodo por probar
 			if (esOperadorLogico())
 				continue;
-//
-//
 
-//
 			// metodo probado
 			if (esComentario())
 				continue;
 
-			// Metodo que reconoce las palabras y tambien las reservadas listo
-//			if (_esIdentificador_esPalabraReservada())
-//				continue;
-//
+			// RESOLVER ESTE ERROR
+			if (esPalabraReservada())
+				continue;
 
-//
+			if (esIdentificador())
+				continue;
 
 			if (esHexadecimal())
 				continue;
@@ -147,8 +153,8 @@ public class AnalizadorLexico {
 			// Metodo probado
 			if (esCadenaCaracteres())
 				continue;
-			
-			if(esTerminal())
+
+			if (esTerminal())
 				continue;
 
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
@@ -158,11 +164,46 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que reconoce los numero naturales y reales
+	 * Metodo que reconoce los nuemro naturales
 	 * 
 	 * @return
 	 */
-	public boolean esNatural_esReal() {
+	public boolean esNatural() {
+
+		if (Character.isDigit(caracterActual)) {
+
+			int fila = filaActual;
+
+			int columna = colActual;
+
+			String palabra = "";
+
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+
+			while (Character.isDigit(caracterActual)) {
+
+				palabra += caracterActual;
+				obtenerSgteCaracter();
+			}
+
+			listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
+			
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Metodo que reconoce los nuemros reales
+	 * 
+	 * @return
+	 */
+	public boolean esNumeroReal() {
 
 		if (Character.isDigit(caracterActual)) {
 
@@ -187,36 +228,87 @@ public class AnalizadorLexico {
 				palabra += caracterActual;
 				obtenerSgteCaracter();
 
-				if (Character.isDigit(caracterActual)) {
+				while (Character.isDigit(caracterActual)) {
 
-					while (Character.isDigit(caracterActual)) {
-
-						palabra += caracterActual;
-
-						obtenerSgteCaracter();
-
-					}
-
-					listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+					palabra += caracterActual;
 					obtenerSgteCaracter();
-					return true;
-
 				}
 
-			} else {
-
-				listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
-				obtenerSgteCaracter();
+				listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
 				return true;
 
-				// GUARDAR EL NUMERO
-
+			}else {
+				
+				vueltaAtras(fila, columna);
+				return false;
 			}
 
 		}
 
 		return false;
+
 	}
+
+	/**
+	 * Metodo que reconoce los numero naturales y reales
+	 * 
+	 * @return
+	 */
+//	public boolean esNatural_esReal() {
+//
+//		if (Character.isDigit(caracterActual)) {
+//
+//			int fila = filaActual;
+//
+//			int columna = colActual;
+//
+//			String palabra = "";
+//
+//			palabra += caracterActual;
+//
+//			obtenerSgteCaracter();
+//
+//			while (Character.isDigit(caracterActual)) {
+//
+//				palabra += caracterActual;
+//				obtenerSgteCaracter();
+//			}
+//
+//			if (caracterActual == '.') {
+//
+//				palabra += caracterActual;
+//				obtenerSgteCaracter();
+//
+//				if (Character.isDigit(caracterActual)) {
+//
+//					while (Character.isDigit(caracterActual)) {
+//
+//						palabra += caracterActual;
+//
+//						obtenerSgteCaracter();
+//
+//					}
+//
+//					listaTokens.add(new Token(Categoria.NUMERO_REAL, palabra, fila, columna));
+//					obtenerSgteCaracter();
+//					return true;
+//
+//				}
+//
+//			} else {
+//
+//				listaTokens.add(new Token(Categoria.NUMERO_NATURAL, palabra, fila, columna));
+//				obtenerSgteCaracter();
+//				return true;
+//
+//				// GUARDAR EL NUMERO
+//
+//			}
+//
+//		}
+//
+//		return false;
+//	}
 
 	/**
 	 * Metodo que detectad los numerosReales
@@ -224,45 +316,45 @@ public class AnalizadorLexico {
 	 * @return
 	 */
 
-	/**
-	 * 
-	 * METODO QUE DETECTA QUE ES IDENTIFICADOR
-	 * 
-	 * @return
-	 */
-	public boolean _esIdentificador_esPalabraReservada() {
-
-		if (Character.isLetter(caracterActual)) {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
-
-			palabra += caracterActual;
-
-			obtenerSgteCaracter();
-
-			while (Character.isLetter(caracterActual) || Character.isDigit(caracterActual) && caracterActual == '_') {
-
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-			}
-
-			if (!correspondeReservada(palabra)) {
-				listaTokens.add(new Token(Categoria.IDENTIFICADOR, palabra, fila, columna));
-				obtenerSgteCaracter();
-				return true;
-
-			} else {
-
-				listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
-				obtenerSgteCaracter();
-				return true;
-
-			}
-		}
-
-		return false;
-	}
+//	/**
+//	 * 
+//	 * METODO QUE DETECTA QUE ES IDENTIFICADOR
+//	 * 
+//	 * @return
+//	 */
+//	public boolean _esIdentificador_esPalabraReservada() {
+//
+//		if (Character.isLetter(caracterActual)) {
+//			String palabra = "";
+//			int fila = filaActual;
+//			int columna = colActual;
+//
+//			palabra += caracterActual;
+//
+//			obtenerSgteCaracter();
+//
+//			while (Character.isLetter(caracterActual) || Character.isDigit(caracterActual)) {
+//
+//				palabra += caracterActual;
+//				obtenerSgteCaracter();
+//			}
+//
+//			if (!correspondeReservada(palabra)) {
+//				listaTokens.add(new Token(Categoria.IDENTIFICADOR, palabra, fila, columna));
+//				obtenerSgteCaracter();
+//				return true;
+//
+//			} else {
+//
+//				listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
+//				obtenerSgteCaracter();
+//				return true;
+//
+//			}
+//		}
+//
+//		return false;
+//	}
 
 	/**
 	 * 
@@ -277,30 +369,31 @@ public class AnalizadorLexico {
 
 			String palabra = "";
 
-			while (Character.isLetter(caracterActual) && posActual < codigoFuente.length()) {
+			palabra += caracterActual;
 
+			obtenerSgteCaracter();
+
+			while (Character.isLetter(caracterActual)) {
 				palabra += caracterActual;
+				obtenerSgteCaracter();
+			}
 
-				if (correspondeReservada(palabra)) {
+			if (Character.isDigit(caracterActual)) {
 
-					// GUARDAMOS EL TOKENS
+				vueltaAtras(fila, columna);
+				return false;
+			}
 
-					obtenerSgteCaracter();
-					if (caracterActual == ' ') {
+			if (correspondeReservada(palabra)) {
 
-						listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
-						obtenerSgteCaracter();
-						return true;
-
-					}
-				}
+				listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
+				return true;
 
 			}
 
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -322,6 +415,46 @@ public class AnalizadorLexico {
 
 		return centinela;
 
+	}
+
+	public boolean esIdentificador() {
+
+		if (Character.isLetter(caracterActual)) {
+
+			int fila = filaActual;
+
+			int columna = colActual;
+
+			String palabra = "";
+
+			palabra += caracterActual;
+
+			obtenerSgteCaracter();
+
+			while (Character.isLetter(caracterActual) || Character.isDigit(caracterActual)) {
+
+				palabra += caracterActual;
+
+				obtenerSgteCaracter();
+
+			}
+
+			listaTokens.add(new Token(Categoria.IDENTIFICADOR, palabra, fila, columna));
+
+			return true;
+
+//			if(!correspondeReservada(palabra)) {
+//				
+//				
+//				listaTokens.add(new Token(Categoria.IDENTIFICADOR, palabra, fila, columna));
+//				
+//				return true;
+//				
+//			}
+
+		}
+
+		return false;
 	}
 
 	/**
@@ -1053,6 +1186,8 @@ public class AnalizadorLexico {
 		posActual = columna;
 
 		colActual = columna;
+
+		caracterActual = codigoFuente.charAt(columna);
 
 	}
 

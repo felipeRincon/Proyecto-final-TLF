@@ -9,7 +9,7 @@ public class App {
 
 		
 		// Validar en la interfaz que el codigo fuente no sea vacio
-		String codigoFuente = "#FF2B; #FFBA123([] {)>++=<=}";
+		String codigoFuente = "23.232 3+++";
 
 		
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
