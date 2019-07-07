@@ -1181,7 +1181,7 @@ public class AnalizadorLexico {
 			palabra += caracterActual;
 			if (caracterActual == '_') {
 
-				listaTokens.add(new Token(Categoria.COMENTARIO, palabra, fila, columna, "(_)(L)*(D)*(_)"));
+				listaTokens.add(new Token(Categoria.COMENTARIO, palabra, fila, columna, Expresion.COMENTARIO));
 				obtenerSgteCaracter();
 				return true;
 
