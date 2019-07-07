@@ -12,7 +12,7 @@ public class App {
 		 * APARENTEMENTE ESTA LISTA
 		 */
 		// Validar en la interfaz que el codigo fuente no sea vacio
-		String codigoFuente = "#_++121.23 2323>=--#==/&&**--";
+		String codigoFuente = "#_++121.23 2323>=--#==/&&**--$$";
 
 		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 		al.analizar();
