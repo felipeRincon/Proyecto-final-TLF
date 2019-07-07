@@ -1,29 +1,28 @@
 package app;
 
+import interfaz.Controller;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import logica.AnalizadorLexico;
-import logica.Token;
 
-public class App {
 
-	public static void main(String arg[]) {
+public class App extends Application{
+	
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("/interfaz/Inicio.fxml"));
+        primaryStage.setTitle("Anaizador Lexico");
+        primaryStage.setScene(new Scene(root, 800, 450));
+        primaryStage.show();
+    }
+    
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-		
-		/**
-		 * APARENTEMENTE ESTA LISTA
-		 */
-		// Validar en la interfaz que el codigo fuente no sea vacio
-		String codigoFuente = "#_++121.23 2323>=--#==/&&**--$$";
+	
 
-		AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
-		al.analizar();
-
-		
-		for (Token a : al.getListaTokens()) {
-
-			System.out.println(a.toString());
-
-			System.out.println("          -------------");
-		}
-
-	}
 }
